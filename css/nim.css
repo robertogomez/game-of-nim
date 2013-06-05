@@ -1,0 +1,58 @@
+/*-------------------------------------------------------------------*
+ *	Title:			nim.css											 *
+ *	Author:			Roberto Gomez									 *
+ *	Date:			6/1/13											 *
+ *	Description:	CSS external stylesheet for nim.html			 *
+ *-------------------------------------------------------------------*/
+
+#play-area {
+	position: relative;
+	width: 400px;
+	height: 400px;
+	/*background-color:;*/
+	border: 5px solid blue;
+}
+
+#game-header {
+	height: 30px;
+	background-color: grey;
+}
+
+ul {
+	text-align: right;
+	padding-top: 5px;
+	margin: 0px;
+}
+
+li {
+	display: inline-block;
+}
+
+#playButton {
+	position: absolute;
+	top: 150px;
+	left: 150px;
+	width: 100px;
+	height: 100px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	background-color: green;
+	text-decoration: none;
+	color: white;
+}
+
+#playButton p {
+	text-align: center;
+	margin-top: 50px;
+}
+
+.token {
+	position: absolute;
+	background-color: black;
+	width: 50px;
+	height: 50px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+}
