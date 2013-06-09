@@ -22,9 +22,9 @@ tokens[2] = Array(1);
 // Create div element to represent a token
 // i corresponds to the column of tokens
 // j corresponds to the number of tokends in each column
-for (var i=0; i<tokens.length; i++)
+/*for (var i=0; i<tokens.length; i++)
 	for (var j=0; j<tokens[i].length; j++)
-		tokens[i][j] = document.createElement('div');
+		tokens[i][j] = new Token();*/
 
 function startGame()
 {
@@ -33,38 +33,53 @@ function startGame()
 	for (var i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {	
 			// Add token div to HTML document & apply token class
-			document.body.appendChild(tokens[i][j]);			
-			tokens[i][j].classList.add('token');
+			tokens[i][j] = new Token(((dx + i * dx) - 100),
+			(400 - (dy + j * dy)), i, j);
+			document.body.appendChild(tokens[i][j].element);			
+			tokens[i][j].element.classList.add('token');
 
 			// Adjust location of tokens
-			tokens[i][j].style.top = 400 - (dy + j * dy) + 'px';
-			tokens[i][j].style.left = (dx + i * dx) - 100 + 'px';
+			tokens[i][j].element.style.top = 400 - (dy + j * dy) + 'px';
+			//tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
+			tokens[i][j].element.style.left = (dx + i * dx) - 100 + 'px';
 
 			// Add onclick property to trigger remove function
-			//tokens[i][j].onclick = remove(i, j);
+			tokens[i][j].element.onclick = remove;
 
 			// Add event listener for each token
 			//tokens[i][j].addEventListener("click", remove, false);
 
 			// Add event listener for each token with anonymous function
 			// call to supply row and col indices as parameters
-			tokens[i][j].addEventListener("click", function(){remove(i, j)}, false);
+			//tokens[i][j].addEventListener("click", function(){remove(i, j)}, false);
 		}
 	}
 }
 
 // need a way to get i and j when onclick is triggered
 // look into get methods, or this
-function remove(row, col)
+function remove()
 {
 	/*var playArea = document.getElementById('play-area');
 	var token = tokens[i][j];
 	token.parentNode.removeChild(token);*/
 	//alert(this);
 	//tokens[i][j].parentNode.removeChild(tokens[i][j]);
-	alert("token[" + row + "][" + col + "]");
-	//this.parentNode.removeChild(this);
+	alert("token[" + this.row + "][" + this.col + "]");
+	this.parentNode.removeChild(this);
 	/*this.style.display = 'none';*/
+}
+
+// Constructor function for token objects
+function Token(pos_x, pos_y, row, col) {
+	this.pos_x = pos_x;
+	this.pos_y = pos_y;
+	this.row = row;
+	this.col = col;
+	this.element = document.createElement('div');
+	//this.element = "div";
+	this.element.row = row;
+	this.element.col = col;
 }
 
 /*
