@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			6/5/13											 *
+ *	Date:			6/9/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
@@ -14,87 +14,66 @@ var dx = 400/3;
 var dy = 350/5;
 
 // 2D array for storing tokens
+// This is where the amount of tokens in each column is stored
 var tokens = Array(3);
 tokens[0] = Array(5);
 tokens[1] = Array(3);
 tokens[2] = Array(1);
 
-// Create div element to represent a token
-// i corresponds to the column of tokens
-// j corresponds to the number of tokends in each column
-/*for (var i=0; i<tokens.length; i++)
-	for (var j=0; j<tokens[i].length; j++)
-		tokens[i][j] = new Token();*/
-
+// Main function called to initiate gameplay
 function startGame()
 {
 	playButton.style.display = 'none';			// Hide playButton link		
 
+	// i corresponds to the column of tokens
+	// j corresponds to the number of tokens in each column
 	for (var i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {	
-			// Add token div to HTML document & apply token class
-			tokens[i][j] = new Token(((dx + i * dx) - 100),
+			// Create Token objects and assign to tokens array
+			tokens[i][j] = new Token(((dx + i * dx) - 100), 
 			(400 - (dy + j * dy)), i, j);
-			document.body.appendChild(tokens[i][j].element);			
-			tokens[i][j].element.classList.add('token');
+			// Add token element to DOM
+			document.body.appendChild(tokens[i][j].element);
+			// Apply token CSS class as specified in nim.css
+			tokens[i][j].element.classList.add('token');		
 
-			// Adjust location of tokens
-			tokens[i][j].element.style.top = 400 - (dy + j * dy) + 'px';
-			//tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
-			tokens[i][j].element.style.left = (dx + i * dx) - 100 + 'px';
+			// Specify location of tokens on DOM
+			tokens[i][j].element.style.left = tokens[i][j].pos_x + 'px';
+			tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
 
 			// Add onclick property to trigger remove function
 			tokens[i][j].element.onclick = remove;
-
-			// Add event listener for each token
-			//tokens[i][j].addEventListener("click", remove, false);
-
-			// Add event listener for each token with anonymous function
-			// call to supply row and col indices as parameters
-			//tokens[i][j].addEventListener("click", function(){remove(i, j)}, false);
 		}
 	}
 }
 
-// need a way to get i and j when onclick is triggered
-// look into get methods, or this
+// maybe define remove function as a method for each Token object so
+// it has access to all the objects properties
 function remove()
 {
-	/*var playArea = document.getElementById('play-area');
-	var token = tokens[i][j];
-	token.parentNode.removeChild(token);*/
-	//alert(this);
-	//tokens[i][j].parentNode.removeChild(tokens[i][j]);
-	alert("token[" + this.row + "][" + this.col + "]");
-	this.parentNode.removeChild(this);
-	/*this.style.display = 'none';*/
+	alert("token[" + this.col + "][" + this.num + "]");
+
+	// Remove tokens starting from the top of the column down
+	// to the selected token. First line removes token element from DOM
+	// and second removes the the Token object from the tokens array.
+	for (var j=tokens[this.col].length-1; j>=this.num; j--) {
+		tokens[this.col][j].element.parentNode.removeChild(tokens[this.col][j].element);
+		tokens[this.col].pop();
+	}
 }
 
 // Constructor function for token objects
-function Token(pos_x, pos_y, row, col) {
-	this.pos_x = pos_x;
-	this.pos_y = pos_y;
-	this.row = row;
-	this.col = col;
-	this.element = document.createElement('div');
-	//this.element = "div";
-	this.element.row = row;
-	this.element.col = col;
+function Token(pos_x, pos_y, col, num) {
+	this.pos_x = pos_x;									// X position for CSS left property
+	this.pos_y = pos_y;									// Y position for CSS top property
+	this.element = document.createElement('div');		// HTML element placed in DOM
+	this.element.col = col;								// Index value for specifying which column token belongs to
+	this.element.num = num;								// Index value for specifying placement of token in its column
 }
 
 /*
-Remove tokens issue
-its a problem when supplying arguments to remove function
-When trying to remove individual tokens, all of them get removed after
-play button is clicked
-Maybe during a round, just hide the tokens, and at end of round removeChild 
-them all
-or specify id's for each individual token and do 
-var token = document.getElementById('21');
-token.parentNode.removeChild(token);
-or use appendChild to add tokens under a parent div for each column
-or create separate parent div to place all tokens in
-
+consider placing all variable declarations inside startGame funciton
+so that memory is allocated only if player wishes to play
 
 this.id, that is the id of each token is undefined so perhaps define
 id's for each token created so that you can reference them by id instead
