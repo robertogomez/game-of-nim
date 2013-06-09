@@ -41,25 +41,29 @@ function startGame()
 			tokens[i][j].style.left = (dx + i * dx) - 100 + 'px';
 
 			// Add onclick property to trigger remove function
-			/*tokens[i][j].onclick = remove;*/
-			tokens[i][j].onclick = remove;
+			//tokens[i][j].onclick = remove(i, j);
+
 			// Add event listener for each token
-			//tokens[i][j].addEventLIstener("click", remove,false);
+			//tokens[i][j].addEventListener("click", remove, false);
+
+			// Add event listener for each token with anonymous function
+			// call to supply row and col indices as parameters
+			tokens[i][j].addEventListener("click", function(){remove(i, j)}, false);
 		}
 	}
 }
 
 // need a way to get i and j when onclick is triggered
 // look into get methods, or this
-function remove()
+function remove(row, col)
 {
 	/*var playArea = document.getElementById('play-area');
 	var token = tokens[i][j];
 	token.parentNode.removeChild(token);*/
-	alert(this);
+	//alert(this);
 	//tokens[i][j].parentNode.removeChild(tokens[i][j]);
-	/*this.parentNode.removeChild(this);*/
-	//alert("token[" + i + "][" + j + "]");
+	alert("token[" + row + "][" + col + "]");
+	//this.parentNode.removeChild(this);
 	/*this.style.display = 'none';*/
 }
 
