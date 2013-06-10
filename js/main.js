@@ -6,25 +6,27 @@
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
 
-// Variable for handling playButton link
-var playButton = document.getElementById('playButton');
-
-// Division sizes in pixels to draw tokens in playArea
-var dx = 400/3;
-var dy = 350/5;
-
-// 2D array for storing tokens
-// This is where the amount of tokens in each column is stored
-var tokens = Array(3);
-tokens[0] = Array(5);
-tokens[1] = Array(3);
-tokens[2] = Array(1);
-
 // Main function called to initiate gameplay
 function startGame()
 {
+	// Variable for handling playButton link
+	var playButton = document.getElementById('playButton');
+
+	// Division sizes in pixels to draw tokens in playArea
+	var dx = 400/3;
+	var dy = 350/5;
+
+	// 2D array for storing tokens
+	// This is where the amount of tokens in each column is stored
+	var tokens = Array(3);
+	tokens[0] = Array(5);
+	tokens[1] = Array(3);
+	tokens[2] = Array(1);
+
 	playButton.style.display = 'none';			// Hide playButton link		
 
+	// Two nested for loops to propagate tokens array with Token objects,
+	// add the token elements to the DOM, and register the onclick properties
 	// i corresponds to the column of tokens
 	// j corresponds to the number of tokens in each column
 	for (var i=0; i<tokens.length; i++) {
@@ -45,40 +47,35 @@ function startGame()
 			tokens[i][j].element.onclick = remove;
 		}
 	}
-}
 
-// maybe define remove function as a method for each Token object so
-// it has access to all the objects properties
-function remove()
-{
-	alert("token[" + this.col + "][" + this.num + "]");
+	// maybe define remove function as a method for each Token object so
+	// it has access to all the objects properties
+	function remove()
+	{
+		//alert("token[" + this.col + "][" + this.num + "]");
 
-	// Remove tokens starting from the top of the column down
-	// to the selected token. First line removes token element from DOM
-	// and second removes the the Token object from the tokens array.
-	for (var j=tokens[this.col].length-1; j>=this.num; j--) {
-		tokens[this.col][j].element.parentNode.removeChild(tokens[this.col][j].element);
-		tokens[this.col].pop();
+		// Remove tokens starting from the top of the column down
+		// to the selected token. First line removes token element from DOM
+		// and second removes the the Token object from the tokens array.
+		for (var j=tokens[this.col].length-1; j>=this.num; j--) {
+			tokens[this.col][j].element.parentNode.removeChild(tokens[this.col][j].element);
+			tokens[this.col].pop();
+		}
+	}
+
+	// Constructor function for creating token objects
+	function Token(pos_x, pos_y, col, num) {
+		this.pos_x = pos_x;									// X position for CSS left property
+		this.pos_y = pos_y;									// Y position for CSS top property
+		this.element = document.createElement('div');		// HTML element placed in DOM
+		this.element.col = col;								// Index value for specifying which column token belongs to
+		this.element.num = num;								// Index value for specifying placement of token in its column
 	}
 }
 
-// Constructor function for token objects
-function Token(pos_x, pos_y, col, num) {
-	this.pos_x = pos_x;									// X position for CSS left property
-	this.pos_y = pos_y;									// Y position for CSS top property
-	this.element = document.createElement('div');		// HTML element placed in DOM
-	this.element.col = col;								// Index value for specifying which column token belongs to
-	this.element.num = num;								// Index value for specifying placement of token in its column
-}
-
 /*
-consider placing all variable declarations inside startGame funciton
-so that memory is allocated only if player wishes to play
+add way of checking for incompatible browsers
 
-this.id, that is the id of each token is undefined so perhaps define
-id's for each token created so that you can reference them by id instead
-of having to pass the i and j indexes to the remove function
-
-create all tokens as children of each other so that when user clicks on one
-all the children of that token are removed as well
+create area to place tokens on, surface, and use surface.clear() to clear
+all references (to avoid memory leaks) and create new round
 */
