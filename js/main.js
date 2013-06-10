@@ -12,20 +12,32 @@ function startGame()
 	// Variable for handling playButton link
 	var playButton = document.getElementById('playButton');
 
-	// Division sizes in pixels to draw tokens in playArea
-	var dx = 400/3;
-	var dy = 350/5;
+	// Create random 2D array for storing Token objects
+	// numCol is the number of columns, maxColTokens is the greatest
+	// number of tokens in all the columns
+	var numCol = getRandomInt(2, 5);
+	var tokens = Array(numCol);
+	var maxColTokens = 0;
+	for (var i=0; i<numCol; i++) {
+		tokens[i] = Array(getRandomInt(2, 5));
+		maxColTokens = Math.max(maxColTokens, tokens[i].length)
+	}
 
 	// 2D array for storing tokens
 	// This is where the amount of tokens in each column is stored
-	var tokens = Array(3);
+	/*var tokens = Array(3);
 	tokens[0] = Array(5);
 	tokens[1] = Array(3);
-	tokens[2] = Array(1);
+	tokens[2] = Array(1);*/
+
+	// Division sizes in pixels to draw tokens in playArea
+	// Used for calculating pos_x and pos_y of Token objects
+	var dx = 400/numCol;
+	var dy = 350/maxColTokens;
 
 	playButton.style.display = 'none';			// Hide playButton link		
 
-	// Two nested for loops to propagate tokens array with Token objects,
+	// Two nested for loops to fill tokens array with Token objects,
 	// add the token elements to the DOM, and register the onclick properties
 	// i corresponds to the column of tokens
 	// j corresponds to the number of tokens in each column
@@ -48,10 +60,18 @@ function startGame()
 		}
 	}
 
+	// Constructor function for creating token objects
+	function Token(pos_x, pos_y, col, num) {
+		this.pos_x = pos_x;									// X position for CSS left property
+		this.pos_y = pos_y;									// Y position for CSS top property
+		this.element = document.createElement('div');		// HTML element placed in DOM
+		this.element.col = col;								// Index value for specifying which column token belongs to
+		this.element.num = num;								// Index value for specifying placement of token in its column
+	}
+
 	// maybe define remove function as a method for each Token object so
 	// it has access to all the objects properties
-	function remove()
-	{
+	function remove() {
 		//alert("token[" + this.col + "][" + this.num + "]");
 
 		// Remove tokens starting from the top of the column down
@@ -63,19 +83,27 @@ function startGame()
 		}
 	}
 
-	// Constructor function for creating token objects
-	function Token(pos_x, pos_y, col, num) {
-		this.pos_x = pos_x;									// X position for CSS left property
-		this.pos_y = pos_y;									// Y position for CSS top property
-		this.element = document.createElement('div');		// HTML element placed in DOM
-		this.element.col = col;								// Index value for specifying which column token belongs to
-		this.element.num = num;								// Index value for specifying placement of token in its column
+	// Returns a random integer between min and max
+	// Using Math.round() will give you a non-uniform distribution!
+	function getRandomInt(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 }
 
 /*
-add way of checking for incompatible browsers
+NOTES
+
+use document fragments to add elements to DOM faster/more efficiently 
+than adding them individually
 
 create area to place tokens on, surface, and use surface.clear() to clear
 all references (to avoid memory leaks) and create new round
+
+add way of checking for incompatible browsers
 */
+
+/*
+ * Thanks to
+ *
+ * MDN for providing getRandomInt() function
+ */
