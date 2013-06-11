@@ -9,6 +9,7 @@
 function startGame()
 {
 	var playButton = document.getElementById('playButton');
+	playButton.style.display = 'none';						// Hide playButton link
 
 	var maxColumns = 5;										// Maximum number of columns possible
 	var maxTokens = 5;										// Maximum number of tokens possible in each column
@@ -20,16 +21,15 @@ function startGame()
 	for (var i=0; i<numOfCol; i++)							// First index represents the column
 		tokens[i] = Array(getRandomInt(2, maxTokens));		// Second index represents the Token object in each column
 
-	playButton.style.display = 'none';						// Hide playButton link		
-
 	for (var i=0; i<tokens.length; i++) {
-		for (var j=0; j<tokens[i].length; j++) {	
+		for (var j=0; j<tokens[i].length; j++) {
 			tokens[i][j] = new Token(((20 + i * dx)), 			// Create Token objects and assign to tokens array
-			(400 - (dy + j * dy)), i, j);
+				(400 - (dy + j * dy)), i, j);
 			document.body.appendChild(tokens[i][j].element);	// Add token element to DOM
 			tokens[i][j].element.classList.add('token');		// Apply token CSS class as specified in nim.css
 
-			tokens[i][j].element.style.left = tokens[i][j].pos_x + 'px';	// Specify location of tokens in DOM
+			// Specify location of tokens in DOM
+			tokens[i][j].element.style.left = tokens[i][j].pos_x + 'px';
 			tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
 
 			tokens[i][j].element.onclick = removeTokens;		// Add onclick property to trigger removeTokens() function
@@ -45,6 +45,12 @@ function startGame()
 		this.element.num = num;								// Index value for specifying placement of token in its column
 	}
 
+	// Returns a random integer between min and max
+	// Using Math.round() will give you a non-uniform distribution!
+	function getRandomInt(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
 	/*---------------------------------------------------------------*
 	 * removeTokens() function										 *
 	 *																 *
@@ -56,38 +62,9 @@ function startGame()
 	 *---------------------------------------------------------------*/
 
 	function removeTokens() {
-		//alert("token[" + this.col + "][" + this.num + "]");
-
 		for (var j=tokens[this.col].length-1; j>=this.num; j--) {
 			tokens[this.col][j].element.parentNode.removeChild(tokens[this.col][j].element);
 			tokens[this.col].pop();
 		}
-	}
-
-	// Returns a random integer between min and max
-	// Using Math.round() will give you a non-uniform distribution!
-	function getRandomInt(min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
+	}	
 }
-
-/*
-NOTES
-
-use document fragments to add elements to DOM faster/more efficiently 
-than adding them individually
-
-create area to place tokens on, surface, and use surface.clear() to clear
-all references (to avoid memory leaks) and create new round
-
-add way of checking for incompatible browsers
-
-maybe define remove function as a method for each Token object so
-it has access to all the objects properties
-*/
-
-/*
- * Thanks to
- *
- * MDN for providing getRandomInt() function
- */
