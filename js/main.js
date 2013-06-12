@@ -23,8 +23,8 @@ function startGame()
 
 	for (var i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {
-			tokens[i][j] = new Token(((20 + i * dx)), 			// Create Token objects and assign to tokens array
-				(400 - (dy + j * dy)), i, j);
+			// Create Token objects and assign to tokens array
+			tokens[i][j] = new Token(((20 + i * dx)), (400 - (dy + j * dy)), i, j);
 			document.body.appendChild(tokens[i][j].element);	// Add token element to DOM
 			tokens[i][j].element.classList.add('token');		// Apply token CSS class as specified in nim.css
 
@@ -32,7 +32,9 @@ function startGame()
 			tokens[i][j].element.style.left = tokens[i][j].pos_x + 'px';
 			tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
 
-			tokens[i][j].element.onclick = removeTokens;		// Add onclick property to trigger removeTokens() function
+			// Add event listeners to trigger functions on click of a token
+			tokens[i][j].element.addEventListener("click", removeTokens, false);
+			tokens[i][j].element.addEventListener("click", delayCompTurn, false);
 		}
 	}
 
@@ -62,9 +64,69 @@ function startGame()
 	 *---------------------------------------------------------------*/
 
 	function removeTokens() {
+		//console.log('token[' + this.col + '][' + this.num + ']');
 		for (var j=tokens[this.col].length-1; j>=this.num; j--) {
 			tokens[this.col][j].element.parentNode.removeChild(tokens[this.col][j].element);
 			tokens[this.col].pop();
 		}
-	}	
+
+		// Set empty column to null to prevent future access
+		if (tokens[this.col].length == 0) {
+			console.log('empty');
+			tokens[this.col] = null;
+		}
+	}
+
+	/*---------------------------------------------------------------*
+	 * delayCompTurn() function										 *
+	 *																 *
+	 * Function used to call startCompTurn() after 2 sec.			 *
+	 *---------------------------------------------------------------*/
+
+	function delayCompTurn() {
+		window.setTimeout(startCompTurn, 2000);
+	}
+
+	/*---------------------------------------------------------------*
+	 * startCompTurn() function										 *
+	 *																 *
+	 * Responsible for starting the computer's turn at selecting	 *
+	 * tokens.														 *
+	 *---------------------------------------------------------------*/
+
+	function startCompTurn() {
+		// check if there are any tokens left to prevent infinite loop
+		var noMoreTokens = true;
+		for (var i=0; i<tokens.length; i++) {
+			if (tokens[i] != null)	noMoreTokens = false;
+		}
+		if (noMoreTokens)	return(console.log('No More Tokens!'));
+
+		// Get random indices from tokens array to represent
+		// computer's token selection
+		var compSelCol = getRandomInt(0, tokens.length-1);
+		while (tokens[compSelCol] == null) {
+			compSelCol = getRandomInt(0, tokens.length-1);
+			console.log('compSelCol = ' + compSelCol);
+		}
+
+		var compSelTok = getRandomInt(0, tokens[compSelCol].length-1);
+		console.log('token[' + compSelCol + '][' + compSelTok + ']');
+
+		for (var j=tokens[compSelCol].length-1; j>=compSelTok; j--) {
+			tokens[compSelCol][j].element.parentNode.removeChild(tokens[compSelCol][j].element);
+			tokens[compSelCol].pop();
+		}
+
+		if (tokens[compSelCol].length == 0) {
+			console.log('empty');
+			tokens[compSelCol] = null;
+		}
+
+		//removeTokens(compSelCol, compSelTok);
+		//tokens[i][j].click();
+	}
 }
+
+
+// consider renaming Token.element.num to Token.element.tok
