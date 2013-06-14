@@ -1,13 +1,12 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			6/10/13											 *
+ *	Date:			6/14/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
 
-function startGame()
-{
+function startGame() {
 	var playButton = document.getElementById('playButton');
 	playButton.style.display = 'none';						// Hide playButton link
 
@@ -35,19 +34,19 @@ function startGame()
 			// Add event listeners to trigger functions on click of a token
 			// Need to use anonymous function in order to pass indices of
 			// clicked token as arguments to removeTokens()
-			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.col, this.num)}, false);
+			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.column, this.token)}, false);
 			tokens[i][j].element.addEventListener("click", delayCompTurn, false);
 		}
 	}
 
 	// Constructor function for creating token objects
-	function Token(pos_x, pos_y, col, num) {
+	function Token(pos_x, pos_y, column, token) {
 		this.pos_x = pos_x;									// X position for CSS left property
 		this.pos_y = pos_y;									// Y position for CSS top property
 		this.element = document.createElement('div');		// HTML element placed in DOM
-		this.element.col = col;								// Index value for specifying which column token belongs to
-		this.element.num = num;								// Index value for specifying placement of token in its column
-	}														// Index values used for access the tokens array
+		this.element.column = column;						// Index values used for accessing the tokens
+		this.element.token = token;							// array, eg tokens[column][token]
+	}
 
 	// Returns a random integer between min and max
 	// Using Math.round() will give you a non-uniform distribution!
@@ -68,14 +67,13 @@ function startGame()
 	 * tokens remaining in a column.								 *
 	 *---------------------------------------------------------------*/
 
-	function removeTokens(column, token) {
-		for (var j=tokens[column].length-1; j>=token; j--) {
-			tokens[column][j].element.parentNode.removeChild(tokens[column][j].element);
-			tokens[column].pop();
+	function removeTokens(col, tok) {
+		for (var j=tokens[col].length-1; j>=tok; j--) {
+			tokens[col][j].element.parentNode.removeChild(tokens[col][j].element);
+			tokens[col].pop();
 		}
 
-		if (tokens[column].length == 0)
-			tokens[column] = null;
+		if (tokens[col].length == 0) tokens[col] = null;
 	}
 
 	/*---------------------------------------------------------------*
@@ -92,34 +90,24 @@ function startGame()
 	 * startCompTurn() function										 *
 	 *																 *
 	 * Responsible for starting the computer's turn at selecting	 *
-	 * tokens.														 *
+	 * tokens. First checks if there are any tokens left to choose,	 *
+	 * if not, it returns the warning message. Uses the				 *
+	 * getRandomInt() function to choose random indices for a token, *
+	 * then passes these indices as arguments into removeTokens().	 *
 	 *---------------------------------------------------------------*/
 
 	function startCompTurn() {
-		// Check if there are any tokens left to prevent infinite loop
 		var noMoreTokens = true;
-		for (var i=0; i<tokens.length; i++) {
-			if (tokens[i] != null)	noMoreTokens = false;
-		}
-		if (noMoreTokens)	return(console.log('No More Tokens!'));
+		for (var i=0; i<tokens.length; i++)
+			if (tokens[i] != null) noMoreTokens = false;
+		if (noMoreTokens) return(console.log('No More Tokens!'));
 
-		// Get random indices from tokens array to represent
-		// computer's token selection
-		var compSelCol = getRandomInt(0, tokens.length-1);
-		while (tokens[compSelCol] == null) {
-			compSelCol = getRandomInt(0, tokens.length-1);
-			console.log('compSelCol = ' + compSelCol);
-		}
-		var compSelTok = getRandomInt(0, tokens[compSelCol].length-1);
-		console.log('token[' + compSelCol + '][' + compSelTok + ']');
+		var selectedCol = getRandomInt(0, tokens.length-1);
+		// Continually get a new column if the selected column has no tokens
+		while (tokens[selectedCol] == null)						
+			selectedCol = getRandomInt(0, tokens.length-1);
+		var selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
 
-		// Call removeTokens() function with the random token's indices as arguments
-		removeTokens(compSelCol, compSelTok);
+		removeTokens(selectedCol, selectedTok);
 	}
 }
-
-/*
-maybe don't need Token.element just do
-this = document.createElement('div');
-consider renaming Token.element.num to Token.element.tok
-*/
