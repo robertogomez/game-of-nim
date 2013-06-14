@@ -60,11 +60,15 @@ function startGame()
 	 * DOM. Remove tokens starting from the top of the column down	 *
 	 * to the selected token. First for loop line removes token		 *
 	 * element from the DOM and second removes the the Token object	 *
-	 * from the tokens array.										 *
+	 * from the tokens array (necessary so that computer's random	 *
+	 * selection doesn't choose an invalid index.					 *
 	 *---------------------------------------------------------------*/
 
 	function removeTokens() {
 		//console.log('token[' + this.col + '][' + this.num + ']');
+		//if (tokens === undefined)
+		// use this keyword
+		// else use tokens or Token argument or i and j arguments supplied to access tokens array
 		for (var j=tokens[this.col].length-1; j>=this.num; j--) {
 			tokens[this.col][j].element.parentNode.removeChild(tokens[this.col][j].element);
 			tokens[this.col].pop();
@@ -95,7 +99,7 @@ function startGame()
 	 *---------------------------------------------------------------*/
 
 	function startCompTurn() {
-		// check if there are any tokens left to prevent infinite loop
+		// Check if there are any tokens left to prevent infinite loop
 		var noMoreTokens = true;
 		for (var i=0; i<tokens.length; i++) {
 			if (tokens[i] != null)	noMoreTokens = false;
@@ -109,24 +113,21 @@ function startGame()
 			compSelCol = getRandomInt(0, tokens.length-1);
 			console.log('compSelCol = ' + compSelCol);
 		}
-
 		var compSelTok = getRandomInt(0, tokens[compSelCol].length-1);
 		console.log('token[' + compSelCol + '][' + compSelTok + ']');
 
-		for (var j=tokens[compSelCol].length-1; j>=compSelTok; j--) {
-			tokens[compSelCol][j].element.parentNode.removeChild(tokens[compSelCol][j].element);
-			tokens[compSelCol].pop();
-		}
+		// First remove event listener that triggers delayCompTurn
+		// to prevent computer from taking successive turns
+		tokens[compSelCol][compSelTok].element.removeEventListener("click", delayCompTurn, false);
 
-		if (tokens[compSelCol].length == 0) {
-			console.log('empty');
-			tokens[compSelCol] = null;
-		}
-
-		//removeTokens(compSelCol, compSelTok);
-		//tokens[i][j].click();
+		// Simulate click on the randomly selected token to trigger
+		// the listener for removeTokens()
+		tokens[compSelCol][compSelTok].element.click();
 	}
 }
 
-
-// consider renaming Token.element.num to Token.element.tok
+/*
+maybe don't need Token.element just do
+this = document.createElement('div');
+consider renaming Token.element.num to Token.element.tok
+*/
