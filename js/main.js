@@ -33,7 +33,9 @@ function startGame()
 			tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
 
 			// Add event listeners to trigger functions on click of a token
-			tokens[i][j].element.addEventListener("click", removeTokens, false);
+			// Need to use anonymous function in order to pass indices of
+			// clicked token as arguments to removeTokens()
+			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.col, this.num)}, false);
 			tokens[i][j].element.addEventListener("click", delayCompTurn, false);
 		}
 	}
@@ -45,7 +47,7 @@ function startGame()
 		this.element = document.createElement('div');		// HTML element placed in DOM
 		this.element.col = col;								// Index value for specifying which column token belongs to
 		this.element.num = num;								// Index value for specifying placement of token in its column
-	}
+	}														// Index values used for access the tokens array
 
 	// Returns a random integer between min and max
 	// Using Math.round() will give you a non-uniform distribution!
@@ -56,29 +58,24 @@ function startGame()
 	/*---------------------------------------------------------------*
 	 * removeTokens() function										 *
 	 *																 *
-	 * Removes the selected token and the tokens above it from the	 *
-	 * DOM. Remove tokens starting from the top of the column down	 *
-	 * to the selected token. First for loop line removes token		 *
-	 * element from the DOM and second removes the the Token object	 *
-	 * from the tokens array (necessary so that computer's random	 *
-	 * selection doesn't choose an invalid index.					 *
+	 * Removes the token specified by the column and token			 *
+	 * parameters from both the DOM and the tokens array.			 *
+	 * DOM. Removes token elements starting from the top of the		 *
+	 * column down to the specified token. To prevent invalid array	 *
+	 * access and to update the number of tokens in a column the	 *
+	 * Token objects are removed from the tokens array using the pop *
+	 * method. null is assigned to the tokens array if there are no	 *
+	 * tokens remaining in a column.								 *
 	 *---------------------------------------------------------------*/
 
-	function removeTokens() {
-		//console.log('token[' + this.col + '][' + this.num + ']');
-		//if (tokens === undefined)
-		// use this keyword
-		// else use tokens or Token argument or i and j arguments supplied to access tokens array
-		for (var j=tokens[this.col].length-1; j>=this.num; j--) {
-			tokens[this.col][j].element.parentNode.removeChild(tokens[this.col][j].element);
-			tokens[this.col].pop();
+	function removeTokens(column, token) {
+		for (var j=tokens[column].length-1; j>=token; j--) {
+			tokens[column][j].element.parentNode.removeChild(tokens[column][j].element);
+			tokens[column].pop();
 		}
 
-		// Set empty column to null to prevent future access
-		if (tokens[this.col].length == 0) {
-			console.log('empty');
-			tokens[this.col] = null;
-		}
+		if (tokens[column].length == 0)
+			tokens[column] = null;
 	}
 
 	/*---------------------------------------------------------------*
@@ -116,13 +113,8 @@ function startGame()
 		var compSelTok = getRandomInt(0, tokens[compSelCol].length-1);
 		console.log('token[' + compSelCol + '][' + compSelTok + ']');
 
-		// First remove event listener that triggers delayCompTurn
-		// to prevent computer from taking successive turns
-		tokens[compSelCol][compSelTok].element.removeEventListener("click", delayCompTurn, false);
-
-		// Simulate click on the randomly selected token to trigger
-		// the listener for removeTokens()
-		tokens[compSelCol][compSelTok].element.click();
+		// Call removeTokens() function with the random token's indices as arguments
+		removeTokens(compSelCol, compSelTok);
 	}
 }
 
