@@ -1,0 +1,25 @@
+CHANGES - game-of-nim
+
+0.6.1 Fri Jun 14 15:29:13 2013
+	- Rewrote removeTokens function to accept parameters
+
+0.6.0 Thu Jun 13 18:52:49 2013
+	- removeTokens function triggered using simulated click method
+
+0.5.0 Wed Jun 12 04:17:02 2013
+	- Added computer's turn in the form of random token selection
+	- Replaced onclick property with event listeners
+
+0.4.0 Sun Jun 9 20:10:27 2013
+	- Added random generation of tokens
+
+0.3.0 Sun Jun 9 14:42:16 2013
+	- Added remove function to remove selected tokens and the ones above it
+
+0.2.0 Sat Jun 8 19:59:41 2013
+	- Tokens represented as objects
+	- Removal of individual tokens working
+
+0.1.0 Wed Jun 5 03:45:56 2013
+	- Displaying array of tokens working
+	- Game started using playButton
