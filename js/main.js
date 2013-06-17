@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			6/14/13											 *
+ *	Date:			6/17/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
@@ -94,6 +94,9 @@ function startGame() {
 	 * if not, it returns the warning message. Uses the				 *
 	 * getRandomInt() function to choose random indices for a token, *
 	 * then passes these indices as arguments into removeTokens().	 *
+	 * The nim-sum of two or more numbers is merely the XOR between	 *
+	 * them ie nim-sum = x ⊕ y ⊕ ... ⊕ z. Column size refers to the	 *
+	 * number of tokens in the column.								 *
 	 *---------------------------------------------------------------*/
 
 	function startCompTurn() {
@@ -102,12 +105,34 @@ function startGame() {
 			if (tokens[i] != null) noMoreTokens = false;
 		if (noMoreTokens) return(console.log('No More Tokens!'));
 
-		var selectedCol = getRandomInt(0, tokens.length-1);
+		var nimSumAll = 0;								// Nim-sum of all the column sizes
+		var nimSumEach = Array(tokens.length);			// Nim-sum of each column size with nimSumAll
+
+		nimSumAll = tokens[0].length;					// Calculate nim-sum of all the column sizes
+		for (var i=1; i<tokens.length; i++)
+			nimSumAll ^= tokens[i].length;
+
+		for (var i=0; i<tokens.length; i++)				// Calculate nim-sum of column sizes and nimSumAll
+			nimSumEach[i] = tokens[i].length ^ nimSumAll;
+
+		// Find a column in which nimSumEach is less than the column size
+		// The nimSumEach value for that column is the number of tokens
+		// that the column should be reduced to, minus one for zero-indexing
+		for (var i=0; i<tokens.length; i++)	 {
+			if (nimSumEach[i] < tokens[i].length) {
+				selectedCol = i;
+				selectedTok = nimSumEach[i] - 1;
+				break;
+			}
+		}
+
+		removeTokens(selectedCol, selectedTok);
+
+		// Calculate nim-sums of the sizes of the columns with nimSumAll
+		/*var selectedCol = getRandomInt(0, tokens.length-1);
 		// Continually get a new column if the selected column has no tokens
 		while (tokens[selectedCol] == null)						
 			selectedCol = getRandomInt(0, tokens.length-1);
-		var selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
-
-		removeTokens(selectedCol, selectedTok);
+		var selectedTok = getRandomInt(0, tokens[selectedCol].length-1);*/
 	}
 }
