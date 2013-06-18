@@ -10,15 +10,15 @@ function startGame() {
 	var playButton = document.getElementById('playButton');
 	playButton.style.display = 'none';						// Hide playButton link
 
-	var maxColumns = 5;										// Maximum number of columns possible
-	var maxTokens = 5;										// Maximum number of tokens possible in each column
-	var dx = 400/maxColumns;								// Division sizes in pixels to draw tokens in playArea
+	var maxHeaps = 5;										// Maximum number of heaps possible
+	var maxTokens = 5;										// Maximum number of tokens possible in each heap
+	var dx = 400/maxHeaps;									// Division sizes in pixels to draw tokens in playArea
 	var dy = 350/maxTokens;									// Used for calculating pos_x and pos_y of Token objects
 
-	var numOfCol = getRandomInt(2, maxColumns);				// Actual number of columns in this round
-	var tokens = Array(numOfCol);							// Create random 2D array for storing Token objects
-	for (var i=0; i<numOfCol; i++)							// First index represents the column
-		tokens[i] = Array(getRandomInt(2, maxTokens));		// Second index represents the Token object in each column
+	var numOfHeaps = getRandomInt(2, maxHeaps);				// Actual number of heaps in this round
+	var tokens = Array(numOfHeaps);							// Create random 2D array for storing Token objects
+	for (var i=0; i<numOfHeaps; i++)						// First index represents the heap
+		tokens[i] = Array(getRandomInt(2, maxTokens));		// Second index represents the Token object in each heap
 
 	for (var i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {
@@ -39,24 +39,30 @@ function startGame() {
 		}
 	}
 
-	// Constructor function for creating token objects
-	// Heap and order are sub-properties of the element property because they
-	// need to be accessible using the this keyword when the event listener for
-	// removeTokens() is added to the Token objects
+	/*---------------------------------------------------------------*
+	 * Token() constructor function									 *
+	 *																 *
+	 * Constructor function for creating Token objects. Heap and	 *
+	 * order are sub-properties of the element property because they *
+	 * need to be accessible using the this keyword when the event	 *
+	 * listener for removeTokens() is added to the Token objects	 *
+	 *---------------------------------------------------------------*/
+
 	function Token(pos_x, pos_y, heap, order) {
 		this.pos_x = pos_x;									// X position for CSS left property
 		this.pos_y = pos_y;									// Y position for CSS top property
 		this.element = document.createElement('div');		// HTML element placed in DOM
-		this.element.heap = heap;							// Index values used for accessing the tokens
-		this.element.order = order;			 				// array, eg tokens[heap][order]
-
-		/*this.decreaseHeap = function() {
-			this.element.heap = this.element.heap - 1;
-		};*/
+		this.element.heap = heap;							// Index values that correspond to the
+		this.element.order = order;			 				// tokens array, eg tokens[heap][order]
 	}
 
-	// Returns a random integer between min and max
-	// Using Math.round() will give you a non-uniform distribution!
+	/*---------------------------------------------------------------*
+	 * getRandomInt() function										 *
+	 *																 *
+	 * Returns a random integer between min and max					 *
+	 * Using Math.round() will give you a non-uniform distribution!	 *
+	 *---------------------------------------------------------------*/
+
 	function getRandomInt(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
@@ -65,24 +71,24 @@ function startGame() {
 	 * removeTokens() function										 *
 	 *																 *
 	 * Removes the token specified by the column and row			 *
-	 * parameters from both the DOM and the tokens array.			 *
-	 * DOM. Removes token elements starting from the top of the		 *
-	 * column down to the specified token. To prevent invalid array	 *
-	 * access and to update the number of tokens in a column the	 *
-	 * Token objects are removed from the tokens array using the pop *
-	 * method.														 *
+	 * parameters from both the DOM and the tokens array. Also		 *
+	 * checks if the column is depleted of tokens, and if so,		 *
+	 * decrements the heap properties of all the tokens that are	 *
+	 * after it and removes it from the tokens array.		 		 *
 	 *---------------------------------------------------------------*/
 
 	function removeTokens(column, row) {
 		console.log("[" + tokens[column][row].element.heap + "][" + tokens[column][row].element.order + "]");
+
+		// Removes token elements starting from the top of the
+		// column down to the specified token. To prevent invalid array
+		// access and to update the number of tokens in a column the
+		// Token objects are removed from the tokens array using the pop method.
 		for (var j=tokens[column].length-1; j>=row; j--) {
 			tokens[column][j].element.parentNode.removeChild(tokens[column][j].element);
 			tokens[column].pop();
 		}
 
-		// When column is depleted of tokens, reduce the heap properties of
-		// all the following columns by one, then remove the empty column
-		// from the tokens array
 		if (tokens[column].length == 0) {
 			for (var i=column+1; i<tokens.length; i++)
 				for (var j=0; j<tokens[i].length; j++)
