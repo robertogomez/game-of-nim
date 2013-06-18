@@ -34,18 +34,25 @@ function startGame() {
 			// Add event listeners to trigger functions on click of a token
 			// Need to use anonymous function in order to pass indices of
 			// clicked token as arguments to removeTokens()
-			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.column, this.token)}, false);
-			tokens[i][j].element.addEventListener("click", delayCompTurn, false);
+			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.heap, this.order)}, false);
+			//tokens[i][j].element.addEventListener("click", delayCompTurn, false);
 		}
 	}
 
 	// Constructor function for creating token objects
-	function Token(pos_x, pos_y, column, token) {
+	// Heap and order are sub-properties of the element property because they
+	// need to be accessible using the this keyword when the event listener for
+	// removeTokens() is added to the Token objects
+	function Token(pos_x, pos_y, heap, order) {
 		this.pos_x = pos_x;									// X position for CSS left property
 		this.pos_y = pos_y;									// Y position for CSS top property
 		this.element = document.createElement('div');		// HTML element placed in DOM
-		this.element.column = column;						// Index values used for accessing the tokens
-		this.element.token = token;							// array, eg tokens[column][token]
+		this.element.heap = heap;							// Index values used for accessing the tokens
+		this.element.order = order;			 				// array, eg tokens[heap][order]
+
+		/*this.decreaseHeap = function() {
+			this.element.heap = this.element.heap - 1;
+		};*/
 	}
 
 	// Returns a random integer between min and max
@@ -57,23 +64,31 @@ function startGame() {
 	/*---------------------------------------------------------------*
 	 * removeTokens() function										 *
 	 *																 *
-	 * Removes the token specified by the column and token			 *
+	 * Removes the token specified by the column and row			 *
 	 * parameters from both the DOM and the tokens array.			 *
 	 * DOM. Removes token elements starting from the top of the		 *
 	 * column down to the specified token. To prevent invalid array	 *
 	 * access and to update the number of tokens in a column the	 *
 	 * Token objects are removed from the tokens array using the pop *
-	 * method. null is assigned to the tokens array if there are no	 *
-	 * tokens remaining in a column.								 *
+	 * method.														 *
 	 *---------------------------------------------------------------*/
 
-	function removeTokens(col, tok) {
-		for (var j=tokens[col].length-1; j>=tok; j--) {
-			tokens[col][j].element.parentNode.removeChild(tokens[col][j].element);
-			tokens[col].pop();
+	function removeTokens(column, row) {
+		console.log("[" + tokens[column][row].element.heap + "][" + tokens[column][row].element.order + "]");
+		for (var j=tokens[column].length-1; j>=row; j--) {
+			tokens[column][j].element.parentNode.removeChild(tokens[column][j].element);
+			tokens[column].pop();
 		}
 
-		if (tokens[col].length == 0) tokens[col] = null;
+		// When column is depleted of tokens, reduce the heap properties of
+		// all the following columns by one, then remove the empty column
+		// from the tokens array
+		if (tokens[column].length == 0) {
+			for (var i=column+1; i<tokens.length; i++)
+				for (var j=0; j<tokens[i].length; j++)
+					tokens[i][j].element.heap--;
+			tokens.splice(column, 1);
+		}
 	}
 
 	/*---------------------------------------------------------------*
@@ -100,10 +115,10 @@ function startGame() {
 	 *---------------------------------------------------------------*/
 
 	function startCompTurn() {
-		var noMoreTokens = true;
+		/*var noMoreTokens = true;
 		for (var i=0; i<tokens.length; i++)
 			if (tokens[i] != null) noMoreTokens = false;
-		if (noMoreTokens) return(console.log('No More Tokens!'));
+		if (noMoreTokens) return(console.log('No More Tokens!'));*/
 
 		var nimSumAll = 0;								// Nim-sum of all the column sizes
 		var nimSumEach = Array(tokens.length);			// Nim-sum of each column size with nimSumAll
