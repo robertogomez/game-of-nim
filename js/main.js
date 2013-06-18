@@ -35,7 +35,7 @@ function startGame() {
 			// Need to use anonymous function in order to pass indices of
 			// clicked token as arguments to removeTokens()
 			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.heap, this.order)}, false);
-			//tokens[i][j].element.addEventListener("click", delayCompTurn, false);
+			tokens[i][j].element.addEventListener("click", delayCompTurn, false);
 		}
 	}
 
@@ -123,30 +123,32 @@ function startGame() {
 	function startCompTurn() {
 		/*var noMoreTokens = true;
 		for (var i=0; i<tokens.length; i++)
-			if (tokens[i] != null) noMoreTokens = false;
-		if (noMoreTokens) return(console.log('No More Tokens!'));*/
+			if (tokens[i] != null) noMoreTokens = false;*/
+		if (tokens.length == 0)
+			return(console.log('No More Tokens!'));
 
-		var nimSumAll = 0;								// Nim-sum of all the column sizes
-		var nimSumEach = Array(tokens.length);			// Nim-sum of each column size with nimSumAll
+		var nimSumAll = 0;								// Nim-sum of all the heap sizes
+		var nimSumEach = Array(tokens.length);			// Nim-sum of each heap size with nimSumAll
 
-		nimSumAll = tokens[0].length;					// Calculate nim-sum of all the column sizes
+		nimSumAll = tokens[0].length;					// Calculate nim-sum of all the heap sizes
 		for (var i=1; i<tokens.length; i++)
 			nimSumAll ^= tokens[i].length;
 
-		for (var i=0; i<tokens.length; i++)				// Calculate nim-sum of column sizes and nimSumAll
+		for (var i=0; i<tokens.length; i++)				// Calculate nim-sum of heap sizes and nimSumAll
 			nimSumEach[i] = tokens[i].length ^ nimSumAll;
 
-		// Find a column in which nimSumEach is less than the column size
-		// The nimSumEach value for that column is the number of tokens
-		// that the column should be reduced to, minus one for zero-indexing
+		// Find a heap in which nimSumEach is less than the heap size
+		// The nimSumEach value for that heap is the number of tokens
+		// that the heap should be reduced to
 		for (var i=0; i<tokens.length; i++)	 {
 			if (nimSumEach[i] < tokens[i].length) {
-				selectedCol = i;
-				selectedTok = nimSumEach[i] - 1;
+				var selectedCol = i;
+				var selectedTok = nimSumEach[i];
 				break;
 			}
 		}
 
+		console.log("[" + selectedCol + "][" + selectedTok + "]");
 		removeTokens(selectedCol, selectedTok);
 
 		// Calculate nim-sums of the sizes of the columns with nimSumAll
