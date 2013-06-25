@@ -20,6 +20,11 @@ function startGame() {
 	for (var i=0; i<numOfHeaps; i++)						// First index represents the heap
 		tokens[i] = Array(getRandomInt(2, maxTokens));		// Second index represents the Token object in each heap
 
+	/*var tokens = Array(3);
+	tokens[0] = Array(1);
+	tokens[1] = Array(5);
+	tokens[2] = Array(5);*/
+
 	for (var i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {
 			// Create Token objects and assign to tokens array
@@ -121,11 +126,9 @@ function startGame() {
 	 *---------------------------------------------------------------*/
 
 	function startCompTurn() {
-		/*var noMoreTokens = true;
-		for (var i=0; i<tokens.length; i++)
-			if (tokens[i] != null) noMoreTokens = false;*/
+		// See if the last tokens were taken by the player
 		if (tokens.length == 0)
-			return(console.log('No More Tokens!'));
+			return (console.log('No More Tokens, Player Wins!'));
 
 		var nimSumAll = 0;								// Nim-sum of all the heap sizes
 		var nimSumEach = Array(tokens.length);			// Nim-sum of each heap size with nimSumAll
@@ -134,22 +137,34 @@ function startGame() {
 		for (var i=1; i<tokens.length; i++)
 			nimSumAll ^= tokens[i].length;
 
-		for (var i=0; i<tokens.length; i++)				// Calculate nim-sum of heap sizes and nimSumAll
-			nimSumEach[i] = tokens[i].length ^ nimSumAll;
+		// If nimSumAll is zero, computer is in losing situation, so pick randomly
+		if (nimSumAll == 0) {
+			console.log("nimSumAll is zero, getting random token");
+			var selectedCol = getRandomInt(0, tokens.length-1);
+			var selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
+		}
+		// else follow the optimal strategy procedure
+		else {
+			for (var i=0; i<tokens.length; i++)				// Calculate nim-sum of heap sizes and nimSumAll
+				nimSumEach[i] = tokens[i].length ^ nimSumAll;
 
-		// Find a heap in which nimSumEach is less than the heap size
-		// The nimSumEach value for that heap is the number of tokens
-		// that the heap should be reduced to
-		for (var i=0; i<tokens.length; i++)	 {
-			if (nimSumEach[i] < tokens[i].length) {
-				var selectedCol = i;
-				var selectedTok = nimSumEach[i];
-				break;
+			// Find a heap in which nimSumEach is less than the heap size
+			// The nimSumEach value for that heap is the number of tokens
+			// that the heap should be reduced to
+			for (var i=0; i<tokens.length; i++)	 {
+				if (nimSumEach[i] < tokens[i].length) {
+					var selectedCol = i;
+					var selectedTok = nimSumEach[i];
+					break;
+				}
 			}
 		}
 
-		console.log("[" + selectedCol + "][" + selectedTok + "]");
 		removeTokens(selectedCol, selectedTok);
+
+		// See if the last tokens were taken by the computer's selection
+		if (tokens.length == 0)
+			return (console.log('No More Tokens, Comp Wins!'));
 
 		// Calculate nim-sums of the sizes of the columns with nimSumAll
 		/*var selectedCol = getRandomInt(0, tokens.length-1);
