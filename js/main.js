@@ -116,13 +116,14 @@ function startGame() {
 	 * startCompTurn() function										 *
 	 *																 *
 	 * Responsible for starting the computer's turn at selecting	 *
-	 * tokens. First checks if there are any tokens left to choose,	 *
-	 * if not, it returns the warning message. Uses the				 *
-	 * getRandomInt() function to choose random indices for a token, *
-	 * then passes these indices as arguments into removeTokens().	 *
-	 * The nim-sum of two or more numbers is merely the XOR between	 *
-	 * them ie nim-sum = x ⊕ y ⊕ ... ⊕ z. Column size refers to the	 *
-	 * number of tokens in the column.								 *
+	 * tokens. Checks the length of the tokens array to see if there *
+	 * are tokens still remaining. Calculates nim sums to determine	 *
+	 * the best possible selection to ensure its victory. If the	 *
+	 * value of nimSumAll is zero, the computer can not gaurantee	 *
+	 * victory, in which case it picks randomly. The nim sum of two	 *
+	 * or more numbers is merely the XOR between them ie			 *
+	 * nim sum = x ⊕ y ⊕ ... ⊕ z. Heap size refers to the number of	 *
+	 * tokens in the heap.								 			 *
 	 *---------------------------------------------------------------*/
 
 	function startCompTurn() {
@@ -145,7 +146,8 @@ function startGame() {
 		}
 		// else follow the optimal strategy procedure
 		else {
-			for (var i=0; i<tokens.length; i++)				// Calculate nim-sum of heap sizes and nimSumAll
+			// Calculate nim sum of heap sizes and nimSumAll
+			for (var i=0; i<tokens.length; i++)
 				nimSumEach[i] = tokens[i].length ^ nimSumAll;
 
 			// Find a heap in which nimSumEach is less than the heap size
