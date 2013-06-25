@@ -1,5 +1,11 @@
 CHANGES - game-of-nim
 
+0.7.0 Mon Jun 24 19:30:00 2013
+	- Added computer optimal strategy
+	- Empty columns in the tokens array are spliced
+	- Renamed some variables for clarity
+	- Added CHANGES file
+
 0.6.1 Fri Jun 14 15:29:13 2013
 	- Rewrote removeTokens function to accept parameters
 

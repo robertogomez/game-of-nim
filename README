@@ -4,8 +4,9 @@ NAME
 	Game of Nim - A robust and versatile take on the Game of Nim
 
 DESCRIPTION
-	This is a web app implementation of the Game of Nim. It uses JavaScript to
-	manipulate the DOM elements.
+	This is a web page implementation of the Game of Nim. It uses JavaScript to
+	manipulate HTML DOM elements to construct a playing field that shows tokens
+	being created and removed.
 
 ACKNOWLEDGEMENTS
 	Mozilla Develop Network for providing getRandomInt() function
@@ -13,7 +14,7 @@ ACKNOWLEDGEMENTS
 	Global_Objects/Math/random
 
 VERSION
-	0.6.1
+	0.7.0
 
 AUTHOR
 	Roberto Gomez, Jr.
