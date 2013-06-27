@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			6/24/13											 *
+ *	Date:			6/26/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
@@ -36,11 +36,11 @@ function startGame() {
 			tokens[i][j].element.style.left = tokens[i][j].pos_x + 'px';
 			tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
 
-			// Add event listeners to trigger functions on click of a token
-			// Need to use anonymous function in order to pass indices of
-			// clicked token as arguments to removeTokens()
+			// Add event listeners to trigger functions when a token is clicked and moused over
 			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.heap, this.order)}, false);
 			tokens[i][j].element.addEventListener("click", delayCompTurn, false);
+			tokens[i][j].element.addEventListener("mouseover", highlightTokens, false);
+			tokens[i][j].element.addEventListener("mouseout", unHighlightTokens, false);
 		}
 	}
 
@@ -174,5 +174,31 @@ function startGame() {
 		while (tokens[selectedCol] == null)						
 			selectedCol = getRandomInt(0, tokens.length-1);
 		var selectedTok = getRandomInt(0, tokens[selectedCol].length-1);*/
+	}
+
+	/*---------------------------------------------------------------*
+	 * highlightTokens() function									 *
+	 *																 *
+	 * Temporarily changes the background-color style property of a	 *
+	 * token when a player mouse overs it.							 *
+	 *---------------------------------------------------------------*/
+
+	function highlightTokens() {
+		for (var j=this.order; j<tokens[this.heap].length; j++) {
+			tokens[this.heap][j].element.style.backgroundColor = 'green';
+		}
+	}
+
+	/*---------------------------------------------------------------*
+	 * unHighlightTokens() function									 *
+	 *																 *
+	 * Restores the color of a token when a player stops mousing	 *
+	 * over it.														 *
+	 *---------------------------------------------------------------*/
+
+	function unHighlightTokens() {
+		for (var j=this.order; j<tokens[this.heap].length; j++) {
+			tokens[this.heap][j].element.style.backgroundColor = 'black';
+		}
 	}
 }
