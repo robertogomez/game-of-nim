@@ -39,8 +39,8 @@ function startGame() {
 			// Add event listeners to trigger functions when a token is clicked and moused over
 			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.heap, this.order)}, false);
 			tokens[i][j].element.addEventListener("click", delayCompTurn, false);
-			tokens[i][j].element.addEventListener("mouseover", highlightTokens, false);
-			tokens[i][j].element.addEventListener("mouseout", unHighlightTokens, false);
+			tokens[i][j].element.addEventListener("mouseover", function(){highlightTokens(this.heap, this.order)}, false);
+			tokens[i][j].element.addEventListener("mouseout", function(){unHighlightTokens(this.heap, this.order)}, false);
 		}
 	}
 
@@ -162,7 +162,11 @@ function startGame() {
 			}
 		}
 
-		removeTokens(selectedCol, selectedTok);
+		highlightTokens(selectedCol, selectedTok);
+		//window.setTimeout(removeTokens, 2000, selectedCol, selectedTok);
+		window.setTimeout(function() {removeTokens(selectedCol, selectedTok)}, 2000);
+		//window.setTimeout(removeCompTokens, 2000, [selectedCol, selectedTok]);
+		//removeTokens(selectedCol, selectedTok);
 
 		// See if the last tokens were taken by the computer's selection
 		if (tokens.length == 0)
@@ -183,9 +187,9 @@ function startGame() {
 	 * token when a player mouse overs it.							 *
 	 *---------------------------------------------------------------*/
 
-	function highlightTokens() {
-		for (var j=this.order; j<tokens[this.heap].length; j++) {
-			tokens[this.heap][j].element.style.backgroundColor = 'green';
+	function highlightTokens(column, row) {
+		for (var j=row; j<tokens[column].length; j++) {
+			tokens[column][j].element.style.backgroundColor = 'green';
 		}
 	}
 
@@ -196,9 +200,9 @@ function startGame() {
 	 * over it.														 *
 	 *---------------------------------------------------------------*/
 
-	function unHighlightTokens() {
-		for (var j=this.order; j<tokens[this.heap].length; j++) {
-			tokens[this.heap][j].element.style.backgroundColor = 'black';
+	function unHighlightTokens(column, row) {
+		for (var j=row; j<tokens[column].length; j++) {
+			tokens[column][j].element.style.backgroundColor = 'black';
 		}
 	}
 }
