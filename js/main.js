@@ -165,19 +165,14 @@ function startGame() {
 
 		highlightTokens(selectedCol, selectedTok);
 
+		// The check for tokens.length needs to be called after removeTokens
+		// inside the anonymous function so that the length property is
+		// updated after the Tokens are removed
 		window.setTimeout(function() {
 			removeTokens(selectedCol, selectedTok);
 			if (tokens.length == 0)
 				console.log('No More Tokens, Comp Wins!');
 		}, 2000);
-
-		// For Random computer selection
-		// Calculate nim-sums of the sizes of the columns with nimSumAll
-		/*var selectedCol = getRandomInt(0, tokens.length-1);
-		// Continually get a new column if the selected column has no tokens
-		while (tokens[selectedCol] == null)						
-			selectedCol = getRandomInt(0, tokens.length-1);
-		var selectedTok = getRandomInt(0, tokens[selectedCol].length-1);*/
 	}
 
 	/*---------------------------------------------------------------*
