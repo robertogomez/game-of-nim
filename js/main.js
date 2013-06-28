@@ -142,7 +142,6 @@ function startGame() {
 
 		// If nimSumAll is zero, computer is in losing situation, so pick randomly
 		if (nimSumAll == 0) {
-			console.log("nimSumAll is zero, getting random token");
 			var selectedCol = getRandomInt(0, tokens.length-1);
 			var selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
 		}
@@ -198,12 +197,14 @@ function startGame() {
 	 * unHighlightTokens() function									 *
 	 *																 *
 	 * Restores the color of a token when a player stops mousing	 *
-	 * over it.														 *
+	 * over it.	A preliminary check to see if tokens[column] is 	 *
+	 * defined is necessary to avoid referencing erros from being	 *
+	 * thrown once a column of tokens has been removed.				 *
 	 *---------------------------------------------------------------*/
 
 	function unHighlightTokens(column, row) {
-		for (var j=row; j<tokens[column].length; j++) {
-			tokens[column][j].element.style.backgroundColor = 'black';
-		}
+		if (!(tokens[column] === undefined))
+			for (var j=row; j<tokens[column].length; j++)
+				tokens[column][j].element.style.backgroundColor = 'black';
 	}
 }
