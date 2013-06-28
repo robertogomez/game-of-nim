@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			6/27/13											 *
+ *	Date:			6/28/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
@@ -203,7 +203,7 @@ function startGame() {
 	 *---------------------------------------------------------------*/
 
 	function unHighlightTokens(column, row) {
-		if (!(tokens[column] === undefined))
+		if (typeof tokens[column] !== 'undefined')
 			for (var j=row; j<tokens[column].length; j++)
 				tokens[column][j].element.style.backgroundColor = 'black';
 	}
