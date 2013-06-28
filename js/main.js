@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			6/26/13											 *
+ *	Date:			6/27/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
@@ -79,7 +79,7 @@ function startGame() {
 	 * parameters from both the DOM and the tokens array. Also		 *
 	 * checks if the column is depleted of tokens, and if so,		 *
 	 * decrements the heap properties of all the tokens that are	 *
-	 * after it and removes it from the tokens array.		 		 *
+	 * after it and removes it from the tokens array.				 *
 	 *---------------------------------------------------------------*/
 
 	function removeTokens(column, row) {
@@ -105,7 +105,9 @@ function startGame() {
 	/*---------------------------------------------------------------*
 	 * delayCompTurn() function										 *
 	 *																 *
-	 * Function used to call startCompTurn() after 2 sec.			 *
+	 * Function used to call startCompTurn() after 2 sec. Necessary	 *
+	 * to cause a delay after the player has moved and before the	 *
+	 * computer makes it selection.									 *
 	 *---------------------------------------------------------------*/
 
 	function delayCompTurn() {
@@ -163,15 +165,14 @@ function startGame() {
 		}
 
 		highlightTokens(selectedCol, selectedTok);
-		//window.setTimeout(removeTokens, 2000, selectedCol, selectedTok);
-		window.setTimeout(function() {removeTokens(selectedCol, selectedTok)}, 2000);
-		//window.setTimeout(removeCompTokens, 2000, [selectedCol, selectedTok]);
-		//removeTokens(selectedCol, selectedTok);
 
-		// See if the last tokens were taken by the computer's selection
-		if (tokens.length == 0)
-			return (console.log('No More Tokens, Comp Wins!'));
+		window.setTimeout(function() {
+			removeTokens(selectedCol, selectedTok);
+			if (tokens.length == 0)
+				console.log('No More Tokens, Comp Wins!');
+		}, 2000);
 
+		// For Random computer selection
 		// Calculate nim-sums of the sizes of the columns with nimSumAll
 		/*var selectedCol = getRandomInt(0, tokens.length-1);
 		// Continually get a new column if the selected column has no tokens
@@ -183,7 +184,7 @@ function startGame() {
 	/*---------------------------------------------------------------*
 	 * highlightTokens() function									 *
 	 *																 *
-	 * Temporarily changes the background-color style property of a	 *
+	 * Changes the background-color style property of a				 *
 	 * token when a player mouse overs it.							 *
 	 *---------------------------------------------------------------*/
 
