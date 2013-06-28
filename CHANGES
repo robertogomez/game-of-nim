@@ -1,5 +1,11 @@
 CHANGES - game-of-nim
 
+0.8.1 Wed Jun 26 20:30:22 2013
+	- Added highlighting of computer's selected tokens
+	
+0.8.0 Wed Jun 26 18:55:39 2013
+	- Added highlighting of player's selected tokens
+
 0.7.0 Mon Jun 24 19:30:00 2013
 	- Added computer optimal strategy
 	- Empty columns in the tokens array are spliced
