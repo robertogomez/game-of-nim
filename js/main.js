@@ -133,8 +133,9 @@ function startGame() {
 		if (tokens.length === 0)
 			return (console.log('No More Tokens, Player Wins!'));
 
-		var nimSumAll = 0;								// Nim-sum of all the heap sizes
-		var nimSumEach = Array(tokens.length);			// Nim-sum of each heap size with nimSumAll
+		var nimSumAll = 0,								// Nim-sum of all the heap sizes
+			nimSumEach = Array(tokens.length),			// Nim-sum of each heap size with nimSumAll
+			selectedCol, selectedTok;					// Indices of the computer's selected token
 
 		nimSumAll = tokens[0].length;					// Calculate nim-sum of all the heap sizes
 		for (var i=1; i<tokens.length; i++)
@@ -142,8 +143,8 @@ function startGame() {
 
 		// If nimSumAll is zero, computer is in losing situation, so pick randomly
 		if (nimSumAll === 0) {
-			var selectedCol = getRandomInt(0, tokens.length-1);
-			var selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
+			selectedCol = getRandomInt(0, tokens.length-1);
+			selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
 		}
 		// else follow the optimal strategy procedure
 		else {
@@ -156,8 +157,8 @@ function startGame() {
 			// that the heap should be reduced to
 			for (i=0; i<tokens.length; i++) {
 				if (nimSumEach[i] < tokens[i].length) {
-					var selectedCol = i;
-					var selectedTok = nimSumEach[i];
+					selectedCol = i;
+					selectedTok = nimSumEach[i];
 					break;
 				}
 			}
