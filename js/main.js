@@ -25,7 +25,7 @@ function startGame() {
 	tokens[1] = Array(5);
 	tokens[2] = Array(5);*/
 
-	for (var i=0; i<tokens.length; i++) {
+	for (i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {
 			// Create Token objects and assign to tokens array
 			tokens[i][j] = new Token(((20 + i * dx)), (400 - (dy + j * dy)), i, j);
@@ -37,10 +37,10 @@ function startGame() {
 			tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
 
 			// Add event listeners to trigger functions when a token is clicked and moused over
-			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.heap, this.order)}, false);
+			tokens[i][j].element.addEventListener("click", function(){removeTokens(this.heap, this.order);}, false);
 			tokens[i][j].element.addEventListener("click", delayCompTurn, false);
-			tokens[i][j].element.addEventListener("mouseover", function(){highlightTokens(this.heap, this.order)}, false);
-			tokens[i][j].element.addEventListener("mouseout", function(){unHighlightTokens(this.heap, this.order)}, false);
+			tokens[i][j].element.addEventListener("mouseover", function(){highlightTokens(this.heap, this.order);}, false);
+			tokens[i][j].element.addEventListener("mouseout", function(){unHighlightTokens(this.heap, this.order);}, false);
 		}
 	}
 
@@ -58,7 +58,7 @@ function startGame() {
 		this.pos_y = pos_y;									// Y position for CSS top property
 		this.element = document.createElement('div');		// HTML element placed in DOM
 		this.element.heap = heap;							// Index values that correspond to the
-		this.element.order = order;			 				// tokens array, eg tokens[heap][order]
+		this.element.order = order;							// tokens array, eg tokens[heap][order]
 	}
 
 	/*---------------------------------------------------------------*
@@ -94,9 +94,9 @@ function startGame() {
 			tokens[column].pop();
 		}
 
-		if (tokens[column].length == 0) {
+		if (tokens[column].length === 0) {
 			for (var i=column+1; i<tokens.length; i++)
-				for (var j=0; j<tokens[i].length; j++)
+				for (j=0; j<tokens[i].length; j++)
 					tokens[i][j].element.heap--;
 			tokens.splice(column, 1);
 		}
@@ -125,12 +125,12 @@ function startGame() {
 	 * victory, in which case it picks randomly. The nim sum of two	 *
 	 * or more numbers is merely the XOR between them ie			 *
 	 * nim sum = x ⊕ y ⊕ ... ⊕ z. Heap size refers to the number of	 *
-	 * tokens in the heap.								 			 *
+	 * tokens in the heap.											 *
 	 *---------------------------------------------------------------*/
 
 	function startCompTurn() {
 		// See if the last tokens were taken by the player
-		if (tokens.length == 0)
+		if (tokens.length === 0)
 			return (console.log('No More Tokens, Player Wins!'));
 
 		var nimSumAll = 0;								// Nim-sum of all the heap sizes
@@ -141,20 +141,20 @@ function startGame() {
 			nimSumAll ^= tokens[i].length;
 
 		// If nimSumAll is zero, computer is in losing situation, so pick randomly
-		if (nimSumAll == 0) {
+		if (nimSumAll === 0) {
 			var selectedCol = getRandomInt(0, tokens.length-1);
 			var selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
 		}
 		// else follow the optimal strategy procedure
 		else {
 			// Calculate nim sum of heap sizes and nimSumAll
-			for (var i=0; i<tokens.length; i++)
+			for (i=0; i<tokens.length; i++)
 				nimSumEach[i] = tokens[i].length ^ nimSumAll;
 
 			// Find a heap in which nimSumEach is less than the heap size
 			// The nimSumEach value for that heap is the number of tokens
 			// that the heap should be reduced to
-			for (var i=0; i<tokens.length; i++)	 {
+			for (i=0; i<tokens.length; i++) {
 				if (nimSumEach[i] < tokens[i].length) {
 					var selectedCol = i;
 					var selectedTok = nimSumEach[i];
@@ -170,7 +170,7 @@ function startGame() {
 		// updated after the Tokens are removed
 		window.setTimeout(function() {
 			removeTokens(selectedCol, selectedTok);
-			if (tokens.length == 0)
+			if (tokens.length === 0)
 				console.log('No More Tokens, Comp Wins!');
 		}, 2000);
 	}
@@ -192,7 +192,7 @@ function startGame() {
 	 * unHighlightTokens() function									 *
 	 *																 *
 	 * Restores the color of a token when a player stops mousing	 *
-	 * over it.	A preliminary check to see if tokens[column] is 	 *
+	 * over it.	A preliminary check to see if tokens[column] is		 *
 	 * defined is necessary to avoid referencing erros from being	 *
 	 * thrown once a column of tokens has been removed.				 *
 	 *---------------------------------------------------------------*/
