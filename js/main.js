@@ -1,29 +1,24 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			6/28/13											 *
+ *	Date:			6/30/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
 
 function startGame() {
-	var playButton = document.getElementById('playButton');
-	playButton.style.display = 'none';						// Hide playButton link
+	var maxHeaps = 5,										// Maximum number of heaps possible
+		maxTokens = 5,										// Maximum number of tokens possible in each heap
+		numOfHeaps = getRandomInt(2, maxHeaps),				// Actual number of heaps in this round		
+		dx = 400/maxHeaps,									// Division sizes in pixels to draw tokens in playArea
+		dy = 350/maxTokens,									// Used for calculating pos_x and pos_y of Token objects		
+		playButton = document.getElementById('playButton');	// Variable for handling the play button element
 
-	var maxHeaps = 5;										// Maximum number of heaps possible
-	var maxTokens = 5;										// Maximum number of tokens possible in each heap
-	var dx = 400/maxHeaps;									// Division sizes in pixels to draw tokens in playArea
-	var dy = 350/maxTokens;									// Used for calculating pos_x and pos_y of Token objects
-
-	var numOfHeaps = getRandomInt(2, maxHeaps);				// Actual number of heaps in this round
 	var tokens = Array(numOfHeaps);							// Create random 2D array for storing Token objects
 	for (var i=0; i<numOfHeaps; i++)						// First index represents the heap
 		tokens[i] = Array(getRandomInt(2, maxTokens));		// Second index represents the Token object in each heap
 
-	/*var tokens = Array(3);
-	tokens[0] = Array(1);
-	tokens[1] = Array(5);
-	tokens[2] = Array(5);*/
+	playButton.style.display = 'none';						// Hide playButton link
 
 	for (i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {
