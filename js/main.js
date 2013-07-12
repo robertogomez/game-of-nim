@@ -199,3 +199,42 @@ function startGame() {
 				tokens[column][j].element.style.backgroundColor = 'black';
 	}
 }
+
+/*---------------------------------------------------------------*
+ * showHelp() function											 *
+ *																 *
+ * showHelp must have global scope so that it can be called		 *
+ * by the link href in nim.html. A better method is to attach	 *
+ * click event listeners to buttons or icons instead of using	 *
+ * links with href.												 *
+ *---------------------------------------------------------------*/
+
+function showHelp() {
+	if (typeof help === 'undefined') {
+		var help = document.createElement('div'),
+			helpTitle = document.createElement('h3'),
+			titleText = document.createTextNode("How to Play Nim"),
+			p = document.createElement('p'),
+			instructions =
+				"The objective of the game is to select the last token. " +
+				"Tokens can only be taken from one heap at a time. " +
+				"When you select a token, any tokens above it in the same " +
+				"heap will be removed as well.",
+			helpText = document.createTextNode(instructions);
+
+		document.body.appendChild(help);
+		help.classList.add('help');
+		help.appendChild(helpTitle);
+		helpTitle.appendChild(titleText);
+		help.appendChild(p);
+		p.appendChild(helpText);
+
+		help.onclick = function() {help.style.display = 'none';};
+	}
+	else
+		help.style.display = 'inline';
+}
+
+/*function showAbout {
+
+}*/
