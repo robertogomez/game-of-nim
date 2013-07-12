@@ -24,9 +24,10 @@ ul {
 	margin: 0px;
 }
 
-li {
-	display: inline-block;
-}
+/*button {
+	type: button;
+
+}*/
 
 #playButton {
 	position: absolute;
