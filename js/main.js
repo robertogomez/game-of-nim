@@ -11,14 +11,13 @@ function startGame() {
 		maxTokens = 5,										// Maximum number of tokens possible in each heap
 		numOfHeaps = getRandomInt(2, maxHeaps),				// Actual number of heaps in this round		
 		dx = 400/maxHeaps,									// Division sizes in pixels to draw tokens in playArea
-		dy = 350/maxTokens,									// Used for calculating pos_x and pos_y of Token objects		
-		playButton = document.getElementById('playButton');	// Variable for handling the play button element
+		dy = 350/maxTokens;									// Used for calculating pos_x and pos_y of Token objects		
 
 	var tokens = Array(numOfHeaps);							// Create random 2D array for storing Token objects
 	for (var i=0; i<numOfHeaps; i++)						// First index represents the heap
 		tokens[i] = Array(getRandomInt(2, maxTokens));		// Second index represents the Token object in each heap
 
-	playButton.style.display = 'none';						// Hide playButton link
+	document.getElementById('playButton').style.display = 'none';	// Hide playButton link
 
 	for (i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {
