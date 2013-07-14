@@ -1,10 +1,48 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			6/30/13											 *
+ *	Date:			7/13/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
+
+document.getElementById('help-button').onclick = showHelp;
+
+/*---------------------------------------------------------------*
+ * showHelp() function											 *
+ *																 *											 *
+ *---------------------------------------------------------------*/
+
+function showHelp() {
+	if (typeof help === 'undefined') {
+		var help = document.createElement('div'),
+			helpTitle = document.createElement('h3'),
+			titleText = document.createTextNode("How to Play Nim"),
+			p = document.createElement('p'),
+			instructions =
+				"The objective of the game is to select the last token. " +
+				"Tokens can only be taken from one heap at a time. " +
+				"When you select a token, any tokens above it in the same " +
+				"heap will be removed as well.",
+			helpText = document.createTextNode(instructions);
+
+		document.body.appendChild(help);
+		help.classList.add('help');
+		help.appendChild(helpTitle);
+		helpTitle.appendChild(titleText);
+		help.appendChild(p);
+		p.appendChild(helpText);
+
+		help.onclick = function() {help.style.display = 'none';};		// User hides the help dialogue when it is clicked
+	}
+	// Once the help dialogue is created, the help button is shown by changing the display property to inline
+	else
+		help.style.display = 'inline';
+}
+
+/*function showAbout {
+
+}*/
 
 function startGame() {
 	var maxHeaps = 5,										// Maximum number of heaps possible
@@ -22,7 +60,7 @@ function startGame() {
 	/*helpButton = document.getElementById('help-button');		// This way is more clear but breaks the rule you made in commit a9fc
 	helpButton.addEventListener("click", showHelp, false);*/
 
-	document.getElementById('help-button').onclick = showHelp;
+	//document.getElementById('help-button').onclick = showHelp;
 
 	for (i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {
@@ -202,40 +240,4 @@ function startGame() {
 			for (var j=row; j<tokens[column].length; j++)
 				tokens[column][j].element.style.backgroundColor = 'black';
 	}
-
-	/*---------------------------------------------------------------*
-	 * showHelp() function											 *
-	 *																 *											 *
-	 *---------------------------------------------------------------*/
-
-	function showHelp() {
-		if (typeof help === 'undefined') {
-			var help = document.createElement('div'),
-				helpTitle = document.createElement('h3'),
-				titleText = document.createTextNode("How to Play Nim"),
-				p = document.createElement('p'),
-				instructions =
-					"The objective of the game is to select the last token. " +
-					"Tokens can only be taken from one heap at a time. " +
-					"When you select a token, any tokens above it in the same " +
-					"heap will be removed as well.",
-				helpText = document.createTextNode(instructions);
-
-			document.body.appendChild(help);
-			help.classList.add('help');
-			help.appendChild(helpTitle);
-			helpTitle.appendChild(titleText);
-			help.appendChild(p);
-			p.appendChild(helpText);
-
-			help.onclick = function() {help.style.display = 'none';};		// User hides the help dialogue when it is clicked
-		}
-		// Once the help dialogue is created, the help button is shown by changing the display property to inline
-		else
-			help.style.display = 'inline';
-	}
-
-	/*function showAbout {
-
-	}*/
 }
