@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			7/13/13											 *
+ *	Date:			7/16/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
@@ -10,13 +10,15 @@ document.getElementById('help-button').onclick = showHelp;
 
 /*---------------------------------------------------------------*
  * showHelp() function											 *
- *																 *											 *
+ *																 *
  *---------------------------------------------------------------*/
 
 function showHelp() {
-	if (typeof help === 'undefined') {
-		var help = document.createElement('div'),
-			helpTitle = document.createElement('h3'),
+	var help = document.getElementById('help');
+
+	// Create the help dialogue if it does not exist in the DOM yet
+	if (help === null) {
+		var helpTitle = document.createElement('h3'),
 			titleText = document.createTextNode("How to Play Nim"),
 			p = document.createElement('p'),
 			instructions =
@@ -26,18 +28,22 @@ function showHelp() {
 				"heap will be removed as well.",
 			helpText = document.createTextNode(instructions);
 
+		help = document.createElement('div');
 		document.body.appendChild(help);
 		help.classList.add('help');
+		help.id = 'help';
+
 		help.appendChild(helpTitle);
 		helpTitle.appendChild(titleText);
 		help.appendChild(p);
 		p.appendChild(helpText);
 
-		help.onclick = function() {help.style.display = 'none';};		// User hides the help dialogue when it is clicked
+		help.onclick = function() {help.style.display = 'none';};		// Hide the dialogue when it is clicked
 	}
-	// Once the help dialogue is created, the help button is shown by changing the display property to inline
-	else
+	// The help dialogue is already created, so just show it
+	else {
 		help.style.display = 'inline';
+	}
 }
 
 /*function showAbout {
