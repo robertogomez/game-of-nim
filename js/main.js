@@ -1,22 +1,29 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			7/16/13											 *
+ *	Date:			7/17/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
 
+// The onclick properties for the buttons need to be specified in global scope
+// so that they can fire their functions before the startGame function is called
 document.getElementById('help-button').onclick = showHelp;
 
-/*---------------------------------------------------------------*
- * showHelp() function											 *
- *																 *
- *---------------------------------------------------------------*/
+/*-------------------------------------------------------------------*
+ * showHelp() function												 *
+ *																	 *
+ * Shows the help dialogue to instruct the user how to play the		 *
+ * game. If the 'help' div has not yet been created and added to	 *
+ * the DOM, it does so. If it has, it merely toggles its display.	 *
+ *-------------------------------------------------------------------*/
 
 function showHelp() {
 	var help = document.getElementById('help');
 
 	// Create the help dialogue if it does not exist in the DOM yet
+	// getElementById returns null if the element with the ID is not in the DOM
+	// It would be nice to use (typeof help === 'null') but typeof null returns 'object'
 	if (help === null) {
 		var helpTitle = document.createElement('h3'),
 			titleText = document.createTextNode("How to Play Nim"),
@@ -40,10 +47,10 @@ function showHelp() {
 
 		help.onclick = function() {help.style.display = 'none';};		// Hide the dialogue when it is clicked
 	}
-	// The help dialogue is already created, so just show it
-	else {
-		help.style.display = 'inline';
-	}
+	else if (help.style.display === 'none')		// The help dialogue is already created
+		help.style.display = 'inline';			// so either toggle it on
+	else
+		help.style.display = 'none';			// or toggle it off
 }
 
 /*function showAbout {
@@ -62,11 +69,6 @@ function startGame() {
 		tokens[i] = Array(getRandomInt(2, maxTokens));		// Second index represents the Token object in each heap
 
 	document.getElementById('playButton').style.display = 'none';	// Hide playButton link
-	//document.getElementById('help-button').addEventListener("click", showHelp, false);
-	/*helpButton = document.getElementById('help-button');		// This way is more clear but breaks the rule you made in commit a9fc
-	helpButton.addEventListener("click", showHelp, false);*/
-
-	//document.getElementById('help-button').onclick = showHelp;
 
 	for (i=0; i<tokens.length; i++) {
 		for (var j=0; j<tokens[i].length; j++) {
