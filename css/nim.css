@@ -56,6 +56,7 @@ ul {
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
+	z-index: 0;
 }
 
 .help {
@@ -67,6 +68,7 @@ ul {
 	border: 1px solid red;
 	background-color: orange;
 	padding: 0 10px;
+	z-index: 1;
 	opacity: 0.9;
 	filter: alpha(opacity=90);		/* IE8 and lower */
 	/*zoom: 1;*/					/* Set "zoom", "width" or "height" to trigger "hasLayout" in IE 7 and lower */
