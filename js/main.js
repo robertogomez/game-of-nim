@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			7/17/13											 *
+ *	Date:			7/31/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
@@ -52,10 +52,6 @@ function showHelp() {
 	else
 		help.style.display = 'none';			// or toggle it off
 }
-
-/*function showAbout {
-
-}*/
 
 function startGame() {
 	var maxHeaps = 5,										// Maximum number of heaps possible
