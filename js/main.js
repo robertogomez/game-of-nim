@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			7/31/13											 *
+ *	Date:			8/13/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ function showHelp() {
 			helpText = document.createTextNode(instructions);
 
 		help = document.createElement('div');
-		document.body.appendChild(help);
+		document.getElementById('play-area').appendChild(help);
 		help.classList.add('help');
 		help.id = 'help';
 
