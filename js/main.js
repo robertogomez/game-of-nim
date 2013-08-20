@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			main.js											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			8/13/13											 *
+ *	Date:			8/14/13											 *
  *	Description:	A robust and versatile take on the Game of Nim	 *
  *					using JS to manipulate DOM elements.			 *
  *-------------------------------------------------------------------*/
@@ -10,12 +10,15 @@
 // so that they can fire their functions before the startGame function is called
 document.getElementById('help-button').onclick = showHelp;
 
+// Create reference variable for play-area so that elements can be added to it
+var playArea = document.getElementById('play-area');
+
 /*-------------------------------------------------------------------*
  * showHelp() function												 *
  *																	 *
  * Shows the help dialogue to instruct the user how to play the		 *
  * game. If the 'help' div has not yet been created and added to	 *
- * the DOM, it does so. If it has, it merely toggles its display.	 *
+ * the DOM, it does so. If it has, it merely toggles its visibility.	 *
  *-------------------------------------------------------------------*/
 
 function showHelp() {
@@ -36,7 +39,7 @@ function showHelp() {
 			helpText = document.createTextNode(instructions);
 
 		help = document.createElement('div');
-		document.getElementById('play-area').appendChild(help);
+		playArea.appendChild(help);
 		help.classList.add('help');
 		help.id = 'help';
 
@@ -45,13 +48,23 @@ function showHelp() {
 		help.appendChild(p);
 		p.appendChild(helpText);
 
-		help.onclick = function() {help.style.display = 'none';};		// Hide the dialogue when it is clicked
+		help.onclick = function() {help.style. visibility = 'hidden';};	// Hide the dialogue when it is clicked
 	}
-	else if (help.style.display === 'none')		// The help dialogue is already created
-		help.style.display = 'inline';			// so either toggle it on
+	else if (help.style.visibility === 'hidden')						// The help dialogue is already created
+		help.style. visibility = 'visible';								// so either toggle it on
 	else
-		help.style.display = 'none';			// or toggle it off
+		help.style. visibility = 'hidden';								// or toggle it off
 }
+/*-------------------------------------------------------------------*
+ * startGame() function												 *
+ *																	 *
+ * Called by the playButtton. Initiates the setup required for a	 *
+ * round of nim, which consists of generating a random array of		 *
+ * tokens and assigning event listeners to them. The listeners call	 *
+ * functions that are central to the game play such as removing		 *
+ * tokens, starting the computer's move, and highlighting and		 *
+ * unhighlighting tokens.											 *
+ *-------------------------------------------------------------------*/
 
 function startGame() {
 	var maxHeaps = 5,										// Maximum number of heaps possible
@@ -70,7 +83,7 @@ function startGame() {
 		for (var j=0; j<tokens[i].length; j++) {
 			// Create Token objects and assign to tokens array
 			tokens[i][j] = new Token(((20 + i * dx)), (400 - (dy + j * dy)), i, j);
-			document.body.appendChild(tokens[i][j].element);	// Add token element to DOM
+			playArea.appendChild(tokens[i][j].element);			// Add token element to DOM
 			tokens[i][j].element.classList.add('token');		// Apply token CSS class as specified in nim.css
 
 			// Specify location of tokens in DOM
@@ -148,7 +161,7 @@ function startGame() {
 	 *																 *
 	 * Function used to call startCompTurn() after 2 sec. Necessary	 *
 	 * to cause a delay after the player has moved and before the	 *
-	 * computer makes it selection.									 *
+	 * computer makes its selection.								 *
 	 *---------------------------------------------------------------*/
 
 	function delayCompTurn() {
