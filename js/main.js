@@ -36,7 +36,9 @@ function showHelp() {
 				"Tokens can only be taken from one heap at a time. " +
 				"When you select a token, any tokens above it in the same " +
 				"heap will be removed as well.",
-			helpText = document.createTextNode(instructions);
+			helpText = document.createTextNode(instructions),
+			okButton = document.createElement('button'),
+			okButtonText = document.createTextNode('OK');
 
 		help = document.createElement('div');
 		playArea.appendChild(help);
@@ -47,6 +49,12 @@ function showHelp() {
 		helpTitle.appendChild(titleText);
 		help.appendChild(p);
 		p.appendChild(helpText);
+
+		help.appendChild(okButton);
+		okButton.id = 'ok-button';
+		okButton.appendChild(okButtonText);
+
+		okButton.onclick = function () {help.style.visibility = 'hidden';};	// Hide the menu when button is clicked
 
 		help.onclick = function() {help.style. visibility = 'hidden';};	// Hide the dialogue when it is clicked
 	}

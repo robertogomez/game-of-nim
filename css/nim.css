@@ -40,17 +40,15 @@ body {
 	margin-top: 50px;
 }
 
-button {
+#help-button {
+	margin-left: 357px;
 	cursor: default;
 	border: none;
 	background-color: transparent;
 	width: 32px;
 	height: 32px;
 	padding: 0;
-}
 
-#help-button {
-	margin-left: 357px;
 }
 
 .help {
@@ -70,6 +68,12 @@ button {
 
 .help h3 {
 	text-align: center;
+}
+
+#ok-button {
+	width: 60px;
+	margin: 40px auto;
+	display: block;					/* Needed for button to center properly */
 }
 
 .token {
