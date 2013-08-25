@@ -1,0 +1,103 @@
+brainstorm
+
+features
+	- add game/help discription
+	  player should be able to view instructions/help in middle of a game, and 
+	  return back to the game
+	- add about link to view information about the game (description, version number)
+	  and creator (name, website, etc)
+	- score counter, can display in game-header next to icons
+	- change background color when players take turns
+	- allow player to construct specific array of tokens
+	- add keyboard support, look into tabindex and :focus
+	  can use autofocus attribute to give the play-button focus when the page
+	  loads so that players can immediately hit enter to start playing
+	  http://www.impressivewebs.com/using-tabindex-with-focus/
+
+options
+	- add option for selecting if player or computer makes first move
+	- opposite game mode (misere), where player that takes last token loses
+	- local two player mode
+	- personalization of game look/feel like color of background, tokens,
+	  different token shapes, etc
+	- greedy nim mode
+	- modify computer turn time
+
+optimization
+	- may be better to add tokens as children of a container eg token-holder, rather than add them all
+	  as children of play-area for purposes of optimization, showing/hiding, swapping between play
+	  field and menus etc
+	- may be more efficient to create a separate function that creates the help/about/options
+	  dialogues once when the buttons are first clicked, then subsequently calls the show 
+	  functions solely to show/hide the popups because the way it's written now, i think that all the variables in the showHelp function are created because of no block scope and hoisting
+	- for options, help, and about links, consider representing them with with buttons
+	  instead of links, and creating click event handlers for them instead of making
+	  them link to javascript functions. this is consistent with separation of content
+	  from behavior and style. consider doing same for start button or removing it with different design approach.
+	- improve structure/design pattern with AMD, module pattern etc
+	  http://css-tricks.com/how-do-you-structure-javascript-the-module-pattern-edition/
+	  http://www.impressivewebs.com/my-current-javascript-design-pattern/
+	  http://stackoverflow.com/questions/528648/how-to-structure-my-javascript-jquery-code
+	  http://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript
+	- look into how to structure and call js source files like AMD. seems like the way
+	  it is now, having everything defined in startGame function, that everything is 
+	  accessible/modifiable from everywhere when it shouldn't eg Token properties 
+	  are modifiable inside the removeTokens function without the need of accessor
+	  functions
+	- maybe make separate js files as project gets more complicated like having 
+	  main.js with main executable instructions and functions.js with function
+	  definitions
+	- the event listener for unHighlight doesn't need to use an
+	  anonymous function call if unHighlight is rewritten with "this"
+	- at certain stages of development, like on release, do some execution/memory
+	  benchmarks to see if performance is acceptable and see how to improve performance
+	- for highlight tokens, instead of changing background-color property, could try using
+	  :focus instead of :hover, or fireEvent or dispatchEvent
+	- three functions that may be added as methods of the Token object are removeTokens,
+	  highlightTokens, unhighlightTokens
+	- special case for optimal comp strat, when only 2 columns left, reduce the 
+	  column with the greater amount of tokens by the amount needed to make the 
+	  columns equal, thus bypassing calculation of nim-sums, maybe more efficient
+	- use document fragments to add elements to DOM faster/more efficiently 
+	  than adding them individually
+	- maybe it's better to define position of Tokens before adding them to DOM
+	- create area to place tokens on, surface, and use surface.clear() to clear
+	  all references (to avoid memory leaks) and create new round
+	- add way of checking for incompatible browsers
+	  for browser inconsistencies/compatibility look into jQuery
+	- in removeTokens function, is popping and splicing the tokens array sufficient enough, or
+	  should the Token objects first be deleted/destroyed, then the tokens array poped/spliced to
+	  free memory?
+	- use constant variables for values used throughout code like delay of 2000
+
+implementation
+	- if player selects large number of maxColumns or maxTokens, either play-area will have to
+	  increase (bad idea) or tokens size will have to be reduced, or limit will have to be imposed
+	- sometimes the same array ot tokens is created when page is refreshed, so may
+	  need way of checking that new array isn't the same as old one
+	- instead of having play button to start, just list simple options first with
+	  smaller play button so that they may choose off the bat whether to play vs 
+	  comp or 2 player, random or smart comp etc.
+	- instead of doing everything in dom, maybe just create static elements like
+	  header, stats, numbers using dom, hide during play, and use canvas to draw
+	  the tokens dynamically
+	- look into grid/table for html to put tokens into or just create multi array
+	  of tokens
+
+fixes/testing/compatibility
+	- check jshint errors/warnings like don't make functions within a loop in the
+	  addeventlisteners in main.js and in nim.css
+	- if want to try and support old IE's, then try using jQuery
+	- need way of preventing user from selecting tokens during computer's move
+	- player highlighting conflicts with highlighting of computer's selection
+	- check for errors if options are adjusted in middle of a game
+
+effects/presentation
+	- the help/about/options popups may look nicer if current tokens are hidden/swiped to the
+	  side, popup is shown, then popup is hidden and tokens reappear/swipe back
+	- make button icons look pressed/depressed when they are clicked
+	- maybe set different background color for icons when hovered over
+	- make buttons have icons only, but a hover tooltip title
+	- i for about/info, ? for help, gear for options or maybe just have two icons ie
+	  incorporate about and help into one button and dialogue
+	- for intial release make theme grayscale
