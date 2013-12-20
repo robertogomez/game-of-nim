@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------*
  *	Title:			nim.css											 *
  *	Author:			Roberto Gomez									 *
- *	Date:			8/15/13											 *
+ *	Date:			12/20/13										 *
  *	Description:	CSS external stylesheet for nim.html			 *
  *-------------------------------------------------------------------*/
 
@@ -61,7 +61,7 @@ body {
 	background-color: orange;
 	padding: 0 10px;
 	z-index: 1;
-	opacity: 0.9;
+	opacity: 0.96;
 	filter: alpha(opacity=90);		/* IE8 and lower */
 	/*zoom: 1;*/					/* Set "zoom", "width" or "height" to trigger "hasLayout" in IE 7 and lower */
 }
