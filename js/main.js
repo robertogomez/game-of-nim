@@ -56,9 +56,6 @@ function showHelp() {
 
         // Hide the menu when button is clicked
         okButton.onclick = function () {help.style.visibility = 'hidden';};
- 
-        // Hide the dialogue when it is clicked
-        help.onclick = function() {help.style. visibility = 'hidden';};
     }
     else if (help.style.visibility === 'hidden')        // The help dialogue is already created
         help.style. visibility = 'visible';             // so either toggle it on
