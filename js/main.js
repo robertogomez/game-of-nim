@@ -1,9 +1,9 @@
 /*----------------------------------------------------------------------------*
- *  Title:          main.js                                                   *
- *  Author:         Roberto Gomez                                             *
- *  Date:           12/20/13                                                  *
- *  Description:    A robust and versatile take on the Game of Nim using      *
- *                  JavaScript to manipulate DOM elements.                    *
+ * Title:          main.js                                                    *
+ * Author:         Roberto Gomez                                              *
+ * Date:           12/20/13                                                   *
+ * Description:    A robust and versatile take on the Game of Nim using       *
+ *                 JavaScript to manipulate DOM elements.                     *
  *----------------------------------------------------------------------------*/
 
 // The onclick properties for the buttons need to be specified in global scope
