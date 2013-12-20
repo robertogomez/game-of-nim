@@ -1,10 +1,10 @@
-/*-------------------------------------------------------------------*
- *  Title:          main.js                                          *
- *  Author:         Roberto Gomez                                    *
- *  Date:           12/20/13                                         *
- *  Description:    A robust and versatile take on the Game of Nim   *
- *                  using JavaScript to manipulate DOM elements.     *
- *-------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*
+ *  Title:          main.js                                                   *
+ *  Author:         Roberto Gomez                                             *
+ *  Date:           12/20/13                                                  *
+ *  Description:    A robust and versatile take on the Game of Nim using      *
+ *                  JavaScript to manipulate DOM elements.                    *
+ *----------------------------------------------------------------------------*/
 
 // The onclick properties for the buttons need to be specified in global scope
 // so that they can fire their functions before the startGame function is called
@@ -13,13 +13,13 @@ document.getElementById('help-button').onclick = showHelp;
 // Create reference variable for play-area so that elements can be added to it
 var playArea = document.getElementById('play-area');
 
-/*-------------------------------------------------------------------*
- * showHelp() function                                               *
- *                                                                   *
- * Shows the help dialogue to instruct the user how to play the      *
- * game. If the 'help' div has not yet been created and added to     *
- * the DOM, it does so. If it has, it merely toggles its visibility. *
- *-------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*
+ * showHelp() function                                                        *
+ *                                                                            *
+ * Shows the help dialogue to instruct the user how to play the game. If the  *
+ * 'help' div has not yet been created and added to the DOM, it does so. If   *
+ * it has, it merely toggles its visibility.                                  *
+ *----------------------------------------------------------------------------*/
 
 function showHelp() {
     var help = document.getElementById('help');
@@ -66,16 +66,15 @@ function showHelp() {
         help.style. visibility = 'hidden';              // or toggle it off
 }
 
-/*-------------------------------------------------------------------*
- * startGame() function                                              *
- *                                                                   *
- * Called by the playButtton. Initiates the setup required for a     *
- * round of nim, which consists of generating a random array of      *
- * tokens and assigning event listeners to them. The listeners call  *
- * functions that are central to the game play such as removing      *
- * tokens, starting the computer's move, and highlighting and        *
- * unhighlighting tokens.                                            *
- *-------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*
+ * startGame() function                                                       *
+ *                                                                            *
+ * Called by the playButtton. Initiates the setup required for a round of     *
+ * nim, which consists of generating a random array of tokens and assigning   *
+ * event listeners to them. The listeners call functions that are central to  *
+ * the game play such as removing tokens, starting the computer's move, and   *
+ * highlighting and unhighlighting tokens.                                    *
+ *----------------------------------------------------------------------------*/
 
 function startGame() {
     var maxHeaps = 5,                               // Maximum number of heaps possible
@@ -111,14 +110,14 @@ function startGame() {
         }
     }
 
-    /*---------------------------------------------------------------*
-     * Token() constructor function                                  *
-     *                                                               *
-     * Constructor function for creating Token objects. Heap and     *
-     * order are sub-properties of the element property because they *
-     * need to be accessible using the this keyword when the event   *
-     * listener for removeTokens() is added to the Token objects     *
-     *---------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------*
+     * Token() constructor function                                               *
+     *                                                                            *
+     * Constructor function for creating Token objects. Heap and order are        *
+     * sub-properties of the element property because they need to be             *
+     * accessible using the "this" keyword when the event listener for            *
+     * removeTokens() is added to the Token objects.                              *
+     *----------------------------------------------------------------------------*/
 
     function Token(pos_x, pos_y, heap, order) {
         this.pos_x = pos_x;                                 // X position for CSS left property
@@ -128,26 +127,25 @@ function startGame() {
         this.element.order = order;                         // tokens array, eg tokens[heap][order]
     }
 
-    /*---------------------------------------------------------------*
-     * getRandomInt() function                                       *
-     *                                                               *
-     * Returns a random integer between min and max                  *
-     * Using Math.round() will give you a non-uniform distribution!  *
-     *---------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------*
+     * getRandomInt() function                                                    *
+     *                                                                            *
+     * Returns a random integer between min and max                               *
+     * Using Math.round() will give you a non-uniform distribution!               *
+     *----------------------------------------------------------------------------*/
 
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    /*---------------------------------------------------------------*
-     * removeTokens() function                                       *
-     *                                                               *
-     * Removes the token specified by the column and row             *
-     * parameters from both the DOM and the tokens array. Also       *
-     * checks if the column is depleted of tokens, and if so,        *
-     * decrements the heap properties of all the tokens that are     *
-     * after it and removes it from the tokens array.                *
-     *---------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------*
+     * removeTokens() function                                                    *
+     *                                                                            *
+     * Removes the token specified by the column and row parameters from both the *
+     * DOM and the tokens array. Also checks if the column is depleted of tokens, *
+     * and if so, decrements the heap properties of all the tokens that are after *
+     * it and removes it from the tokens array.                                   *
+     *----------------------------------------------------------------------------*/
 
     function removeTokens(column, row) {
         console.log("[" + tokens[column][row].element.heap + "][" + tokens[column][row].element.order + "]");
@@ -169,31 +167,29 @@ function startGame() {
         }
     }
 
-    /*---------------------------------------------------------------*
-     * delayCompTurn() function                                      *
-     *                                                               *
-     * Function used to call startCompTurn() after 2 sec. Necessary  *
-     * to cause a delay after the player has moved and before the    *
-     * computer makes its selection.                                 *
-     *---------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------*
+     * delayCompTurn() function                                                   *
+     *                                                                            *
+     * Function used to call startCompTurn() after 2 sec. Necessary to cause a    *
+     * delay after the player has moved and before the computer makes its         *
+     * selection.                                                                 *
+     *----------------------------------------------------------------------------*/
 
     function delayCompTurn() {
         window.setTimeout(startCompTurn, 2000);
     }
 
-    /*---------------------------------------------------------------*
-     * startCompTurn() function                                      *
-     *                                                               *
-     * Responsible for starting the computer's turn at selecting     *
-     * tokens. Checks the length of the tokens array to see if there *
-     * are tokens still remaining. Calculates nim sums to determine  *
-     * the best possible selection to ensure its victory. If the     *
-     * value of nimSumAll is zero, the computer can not gaurantee    *
-     * victory, in which case it picks randomly. The nim sum of two  *
-     * or more numbers is merely the XOR between them ie             *
-     * nim sum = x ⊕ y ⊕ ... ⊕ z. Heap size refers to the number of  *
-     * tokens in the heap.                                           *
-     *---------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------*
+     * startCompTurn() function                                                   *
+     *                                                                            *
+     * Responsible for starting the computer's turn at selecting tokens. Checks   *
+     * the length of the tokens array to see if there are tokens still remaining. *
+     * Calculates nim sums to determine the best possible selection to ensure its *
+     * victory. If the value of nimSumAll is zero, the computer can not gaurantee *
+     * victory, in which case it picks randomly. The nim sum of two or more       *
+     * numbers is merely the XOR between them ie nim sum = x₁ ⊕ x₂ ⊕ ... ⊕ xₙ.    *
+     * Heap size refers to the number of tokens in the heap.                      *
+     *----------------------------------------------------------------------------*/
 
     function startCompTurn() {
         // See if the last tokens were taken by the player
@@ -243,12 +239,12 @@ function startGame() {
         }, 2000);
     }
 
-    /*---------------------------------------------------------------*
-     * highlightTokens() function                                    *
-     *                                                               *
-     * Changes the background-color style property of a              *
-     * token when a player mouse overs it.                           *
-     *---------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------*
+     * highlightTokens() function                                                 *
+     *                                                                            *
+     * Changes the background-color style property of a token. Called when the    *
+     * player mouses overs a token or after the computer has made its selection.  *
+     *----------------------------------------------------------------------------*/
 
     function highlightTokens(column, row) {
         for (var j=row; j<tokens[column].length; j++) {
@@ -256,14 +252,14 @@ function startGame() {
         }
     }
 
-    /*---------------------------------------------------------------*
-     * unHighlightTokens() function                                  *
-     *                                                               *
-     * Restores the color of a token when a player stops mousing     *
-     * over it. A preliminary check to see if tokens[column] is      *
-     * defined is necessary to avoid referencing erros from being    *
-     * thrown once a column of tokens has been removed.              *
-     *---------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------*
+     * unHighlightTokens() function                                               *
+     *                                                                            *
+     * Restores the color of a token when a player stops mousing over it. A       *
+     * preliminary check to see if tokens[column] is defined is necessary to      *
+     * avoid referencing erros from being thrown once a column of tokens has been *
+     * removed.                                                                   *
+     *----------------------------------------------------------------------------*/
 
     function unHighlightTokens(column, row) {
         if (typeof tokens[column] !== 'undefined')
