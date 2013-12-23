@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*
  * Title:          main.js                                                    *
  * Author:         Roberto Gomez                                              *
- * Date:           12/20/13                                                   *
+ * Date:           12/23/13                                                   *
  * Description:    A robust and versatile take on the Game of Nim using       *
  *                 JavaScript to manipulate DOM elements.                     *
  *----------------------------------------------------------------------------*/
@@ -78,7 +78,9 @@ function startGame() {
         maxTokens = 5,                              // Maximum number of tokens possible per heap
         numOfHeaps = getRandomInt(2, maxHeaps),     // Actual number of heaps in this round     
         dx = 400/maxHeaps,                          // Column and row sizes in pixels
-        dy = 350/maxTokens;                         // Used for calculating position of Token objects
+        dy = 350/maxTokens,                         // Used for calculating position of Token objects
+        playerScore = 0,                            // Number of wins for player
+        compScore = 0;                              // Number of wins for computer
 
     // Create random 2D array for storing Token objects
     // First index represents the heap, second index represents the Token in each heap
@@ -189,51 +191,88 @@ function startGame() {
      *----------------------------------------------------------------------------*/
 
     function startCompTurn() {
-        // See if the last tokens were taken by the player
-        if (tokens.length === 0)
-            return (console.log('No More Tokens, Player Wins!'));
+        // See if the last token was taken by the player
+        if (tokens.length === 0) {
+            playerScore++;
 
-        var nimSumAll = 0,                              // Nim-sum of all the heap sizes
-            nimSumEach = Array(tokens.length),          // Nim-sum of each heap size with nimSumAll
-            selectedCol, selectedTok;                   // Indices of the computer's selected token
+            var scoreboard = document.getElementById('scoreboard');
 
-        nimSumAll = tokens[0].length;                   // Calculate nim-sum of all the heap sizes
-        for (var i=1; i<tokens.length; i++)
-            nimSumAll ^= tokens[i].length;
+            if (scoreboard === null) {
+                var scoreboardMessage = document.createElement('h1'),
+                    messageText = document.createTextNode("You Won!"),
+                    playerHeader = document.createElement('h2'),
+                    compHeader = document.createElement('h2'),
+                    playerHeaderText = document.createTextNode("You"),
+                    compHeaderText = document.createTextNode("Computer"),
+                    playerScoreText = document.createElement('p'),
+                    compScoreText = document.createElement('p'),
+                    playerScoreValue = document.createTextNode(playerScore),
+                    compScoreValue = document.createTextNode(compScore);
 
-        // If nimSumAll is zero, computer is in losing situation, so pick randomly
-        if (nimSumAll === 0) {
-            selectedCol = getRandomInt(0, tokens.length-1);
-            selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
+                scoreboard = document.createElement('div');
+                playArea.appendChild(scoreboard);
+                scoreboard.classList.add('scoreboard');
+                scoreboard.id = 'scoreboard';
+
+                scoreboard.appendChild(scoreboardMessage);
+                scoreboardMessage.appendChild(messageText);
+                scoreboard.appendChild(playerHeader);
+                playerHeader.appendChild(playerHeaderText);
+                scoreboard.appendChild(compHeader);
+                compHeader.appendChild(compHeaderText);
+                scoreboard.appendChild(playerScoreText);
+                playerScoreText.appendChild(playerScoreValue);
+                scoreboard.appendChild(compScoreText);
+                compScoreText.appendChild(compScoreValue);
+                playerHeader.id = "player-header";
+                playerScoreText.id = 'player-score';
+            }
+            else
+                help.style. visibility = 'visible';
         }
-        // else follow the optimal strategy procedure
         else {
-            // Calculate nim sum of heap sizes and nimSumAll
-            for (i=0; i<tokens.length; i++)
-                nimSumEach[i] = tokens[i].length ^ nimSumAll;
+            var nimSumAll = 0,                          // Nim-sum of all the heap sizes
+                nimSumEach = Array(tokens.length),      // Nim-sum of each heap size with nimSumAll
+                selectedCol, selectedTok;               // Indices of the computer's selected token
 
-            // Find a heap in which nimSumEach is less than the heap size
-            // The nimSumEach value for that heap is the number of tokens
-            // that the heap should be reduced to
-            for (i=0; i<tokens.length; i++) {
-                if (nimSumEach[i] < tokens[i].length) {
-                    selectedCol = i;
-                    selectedTok = nimSumEach[i];
-                    break;
+            nimSumAll = tokens[0].length;               // Calculate nim-sum of all the heap sizes
+            for (var i=1; i<tokens.length; i++)
+                nimSumAll ^= tokens[i].length;
+
+            // If nimSumAll is zero, computer is in losing situation, so pick randomly
+            if (nimSumAll === 0) {
+                selectedCol = getRandomInt(0, tokens.length-1);
+                selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
+            }
+            // else follow the optimal strategy procedure
+            else {
+                // Calculate nim sum of heap sizes and nimSumAll
+                for (i=0; i<tokens.length; i++)
+                    nimSumEach[i] = tokens[i].length ^ nimSumAll;
+
+                // Find a heap in which nimSumEach is less than the heap size
+                // The nimSumEach value for that heap is the number of tokens
+                // that the heap should be reduced to
+                for (i=0; i<tokens.length; i++) {
+                    if (nimSumEach[i] < tokens[i].length) {
+                        selectedCol = i;
+                        selectedTok = nimSumEach[i];
+                        break;
+                    }
                 }
             }
+
+            highlightTokens(selectedCol, selectedTok);
+
+            // The check for tokens.length needs to be called after removeTokens
+            // inside the anonymous function so that the length property is
+            // updated after the Tokens are removed
+            window.setTimeout(function() {
+                removeTokens(selectedCol, selectedTok);
+                if (tokens.length === 0)
+                    console.log('No More Tokens, Comp Wins!');
+            }, 2000);
         }
-
-        highlightTokens(selectedCol, selectedTok);
-
-        // The check for tokens.length needs to be called after removeTokens
-        // inside the anonymous function so that the length property is
-        // updated after the Tokens are removed
-        window.setTimeout(function() {
-            removeTokens(selectedCol, selectedTok);
-            if (tokens.length === 0)
-                console.log('No More Tokens, Comp Wins!');
-        }, 2000);
     }
 
     /*----------------------------------------------------------------------------*

@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*
  * Title:          nim.css                                                    *
  * Author:         Roberto Gomez                                              *
- * Date:           12/20/13                                                   *
+ * Date:           12/23/13                                                   *
  * Description:    CSS external stylesheet for nim.html                       *
  *----------------------------------------------------------------------------*/
 
@@ -68,6 +68,35 @@ body {
 
 .help h3 {
     text-align: center;
+}
+
+.scoreboard {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.scoreboard h1 {
+    text-align: center;
+}
+
+.scoreboard h2 {
+    display: inline;
+}
+
+#player-header {
+    margin-left: 60px;
+    margin-right: 35px;
+}
+
+.scoreboard p {
+    display: inline-block;
+    font-size: 40px;
+    margin-top: 20px;
+}
+
+#player-score {
+    margin-left: 75px;
+    margin-right: 90px;
 }
 
 #ok-button {
