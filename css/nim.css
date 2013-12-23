@@ -70,33 +70,28 @@ body {
     text-align: center;
 }
 
-.scoreboard {
+#scoreboard {
     width: 300px;
     margin: 0 auto;
-}
-
-.scoreboard h1 {
     text-align: center;
 }
 
-.scoreboard h2 {
-    display: inline;
+#table {
+    display: table;
 }
 
-#player-header {
-    margin-left: 60px;
-    margin-right: 35px;
+.row {
+    display: table-row;
 }
 
-.scoreboard p {
-    display: inline-block;
+.cell {
+    display: table-cell;
+    width: 200px;
+}
+
+.cell p {
     font-size: 40px;
-    margin-top: 20px;
-}
-
-#player-score {
-    margin-left: 75px;
-    margin-right: 90px;
+    margin: 10px 0;
 }
 
 #ok-button {

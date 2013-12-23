@@ -198,8 +198,17 @@ function startGame() {
             var scoreboard = document.getElementById('scoreboard');
 
             if (scoreboard === null) {
+                scoreboard = document.createElement('div');
+
                 var scoreboardMessage = document.createElement('h1'),
                     messageText = document.createTextNode("You Won!"),
+                    table = document.createElement('div'),
+                    row1 = document.createElement('div'),
+                    row1Cell1 = document.createElement('div'),
+                    row1Cell2 = document.createElement('div'),
+                    row2 = document.createElement('div'),
+                    row2Cell1 = document.createElement('div'),
+                    row2Cell2 = document.createElement('div'),
                     playerHeader = document.createElement('h2'),
                     compHeader = document.createElement('h2'),
                     playerHeaderText = document.createTextNode("You"),
@@ -209,23 +218,33 @@ function startGame() {
                     playerScoreValue = document.createTextNode(playerScore),
                     compScoreValue = document.createTextNode(compScore);
 
-                scoreboard = document.createElement('div');
-                playArea.appendChild(scoreboard);
-                scoreboard.classList.add('scoreboard');
-                scoreboard.id = 'scoreboard';
+                scoreboard.id = "scoreboard";
+                table.id = "table";
+                row1.classList.add("row");
+                row2.classList.add("row");
+                row1Cell1.classList.add("cell");
+                row1Cell2.classList.add("cell");
+                row2Cell1.classList.add("cell");
+                row2Cell2.classList.add("cell");
 
+                playArea.appendChild(scoreboard);
                 scoreboard.appendChild(scoreboardMessage);
                 scoreboardMessage.appendChild(messageText);
-                scoreboard.appendChild(playerHeader);
+                scoreboard.appendChild(table);
+                table.appendChild(row1);
+                row1.appendChild(row1Cell1);
+                row1Cell1.appendChild(playerHeader);
                 playerHeader.appendChild(playerHeaderText);
-                scoreboard.appendChild(compHeader);
+                row1.appendChild(row1Cell2);
+                row1Cell2.appendChild(compHeader);
                 compHeader.appendChild(compHeaderText);
-                scoreboard.appendChild(playerScoreText);
+                table.appendChild(row2);
+                row2.appendChild(row2Cell1);
+                row2Cell1.appendChild(playerScoreText);
                 playerScoreText.appendChild(playerScoreValue);
-                scoreboard.appendChild(compScoreText);
+                row2.appendChild(row2Cell2);
+                row2Cell2.appendChild(compScoreText);
                 compScoreText.appendChild(compScoreValue);
-                playerHeader.id = "player-header";
-                playerScoreText.id = 'player-score';
             }
             else
                 help.style. visibility = 'visible';
