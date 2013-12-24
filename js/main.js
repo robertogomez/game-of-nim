@@ -247,7 +247,7 @@ function startGame() {
                 compScoreText.appendChild(compScoreValue);
             }
             else
-                help.style. visibility = 'visible';
+                scoreboard.style.visibility = 'visible';
         }
         else {
             var nimSumAll = 0,                          // Nim-sum of all the heap sizes
