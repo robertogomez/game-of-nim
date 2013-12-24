@@ -284,8 +284,11 @@ function startGame() {
             // updated after the Tokens are removed
             window.setTimeout(function() {
                 removeTokens(selectedCol, selectedTok);
-                if (tokens.length === 0)
-                    console.log('No More Tokens, Comp Wins!');
+                if (tokens.length === 0) {
+                    compScore++;
+                    compScoreText.textContent = compScore;
+                    scoreboard.style.visibility = 'visible';
+                }
             }, 2000);
         }
     }
