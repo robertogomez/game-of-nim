@@ -241,9 +241,8 @@ function startGame() {
 
     function startCompTurn() {
         if (tokens.length === 0) {                      // Check if the last token was taken
-            playerScore++;                              // by the player, and if so, update score
-            playerScoreText.textContent = playerScore;  // and show the scoreboard
-            scoreboard.style.visibility = 'visible';
+            playerScoreText.textContent = ++playerScore;// by the player, and if so, update score
+            scoreboard.style.visibility = 'visible';    // and show the scoreboard
         }
         else {
             var nimSumAll = 0,                          // Nim-sum of all the heap sizes
@@ -285,8 +284,7 @@ function startGame() {
             window.setTimeout(function() {
                 removeTokens(selectedCol, selectedTok);
                 if (tokens.length === 0) {
-                    compScore++;
-                    compScoreText.textContent = compScore;
+                    compScoreText.textContent = ++compScore;
                     scoreboard.style.visibility = 'visible';
                 }
             }, 2000);
