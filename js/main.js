@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*
  * Title:          main.js                                                    *
  * Author:         Roberto Gomez                                              *
- * Date:           12/23/13                                                   *
+ * Date:           12/24/13                                                   *
  * Description:    A robust and versatile take on the Game of Nim using       *
  *                 JavaScript to manipulate DOM elements.                     *
  *----------------------------------------------------------------------------*/
@@ -109,6 +109,55 @@ function startGame() {
         }
     }
 
+    var scoreboard = document.createElement('div'),             // Create elements necessary
+        scoreboardMessage = document.createElement('h1'),       // for the scoreboard
+        messageText = document.createTextNode("You Won!"),
+        table = document.createElement('div'),
+        row1 = document.createElement('div'),
+        row1Cell1 = document.createElement('div'),
+        row1Cell2 = document.createElement('div'),
+        row2 = document.createElement('div'),
+        row2Cell1 = document.createElement('div'),
+        row2Cell2 = document.createElement('div'),
+        playerHeader = document.createElement('h2'),
+        compHeader = document.createElement('h2'),
+        playerHeaderText = document.createTextNode("You"),
+        compHeaderText = document.createTextNode("Computer"),
+        playerScoreText = document.createElement('p'),
+        compScoreText = document.createElement('p'),
+        playerScoreValue = document.createTextNode(playerScore),
+        compScoreValue = document.createTextNode(compScore);
+
+    scoreboard.id = "scoreboard";                               // Add ids and classes
+    table.id = "table";
+    row1.classList.add("row");
+    row2.classList.add("row");
+    row1Cell1.classList.add("cell");
+    row1Cell2.classList.add("cell");
+    row2Cell1.classList.add("cell");
+    row2Cell2.classList.add("cell");
+
+    playArea.appendChild(scoreboard);                           // Add elements to the DOM
+    scoreboard.appendChild(scoreboardMessage);
+    scoreboardMessage.appendChild(messageText);
+    scoreboard.appendChild(table);
+    table.appendChild(row1);
+    row1.appendChild(row1Cell1);
+    row1Cell1.appendChild(playerHeader);
+    playerHeader.appendChild(playerHeaderText);
+    row1.appendChild(row1Cell2);
+    row1Cell2.appendChild(compHeader);
+    compHeader.appendChild(compHeaderText);
+    table.appendChild(row2);
+    row2.appendChild(row2Cell1);
+    row2Cell1.appendChild(playerScoreText);
+    playerScoreText.appendChild(playerScoreValue);
+    row2.appendChild(row2Cell2);
+    row2Cell2.appendChild(compScoreText);
+    compScoreText.appendChild(compScoreValue);
+
+    scoreboard.style.visibility = "hidden";                     // Hide scoreboard
+
     /*----------------------------------------------------------------------------*
      * Token() constructor function                                               *
      *                                                                            *
@@ -191,63 +240,10 @@ function startGame() {
      *----------------------------------------------------------------------------*/
 
     function startCompTurn() {
-        // See if the last token was taken by the player
-        if (tokens.length === 0) {
-            playerScore++;
-
-            var scoreboard = document.getElementById('scoreboard');
-
-            if (scoreboard === null) {
-                scoreboard = document.createElement('div');
-
-                var scoreboardMessage = document.createElement('h1'),
-                    messageText = document.createTextNode("You Won!"),
-                    table = document.createElement('div'),
-                    row1 = document.createElement('div'),
-                    row1Cell1 = document.createElement('div'),
-                    row1Cell2 = document.createElement('div'),
-                    row2 = document.createElement('div'),
-                    row2Cell1 = document.createElement('div'),
-                    row2Cell2 = document.createElement('div'),
-                    playerHeader = document.createElement('h2'),
-                    compHeader = document.createElement('h2'),
-                    playerHeaderText = document.createTextNode("You"),
-                    compHeaderText = document.createTextNode("Computer"),
-                    playerScoreText = document.createElement('p'),
-                    compScoreText = document.createElement('p'),
-                    playerScoreValue = document.createTextNode(playerScore),
-                    compScoreValue = document.createTextNode(compScore);
-
-                scoreboard.id = "scoreboard";
-                table.id = "table";
-                row1.classList.add("row");
-                row2.classList.add("row");
-                row1Cell1.classList.add("cell");
-                row1Cell2.classList.add("cell");
-                row2Cell1.classList.add("cell");
-                row2Cell2.classList.add("cell");
-
-                playArea.appendChild(scoreboard);
-                scoreboard.appendChild(scoreboardMessage);
-                scoreboardMessage.appendChild(messageText);
-                scoreboard.appendChild(table);
-                table.appendChild(row1);
-                row1.appendChild(row1Cell1);
-                row1Cell1.appendChild(playerHeader);
-                playerHeader.appendChild(playerHeaderText);
-                row1.appendChild(row1Cell2);
-                row1Cell2.appendChild(compHeader);
-                compHeader.appendChild(compHeaderText);
-                table.appendChild(row2);
-                row2.appendChild(row2Cell1);
-                row2Cell1.appendChild(playerScoreText);
-                playerScoreText.appendChild(playerScoreValue);
-                row2.appendChild(row2Cell2);
-                row2Cell2.appendChild(compScoreText);
-                compScoreText.appendChild(compScoreValue);
-            }
-            else
-                scoreboard.style.visibility = 'visible';
+        if (tokens.length === 0) {                      // Check if the last token was taken
+            playerScore++;                              // by the player, and if so, update score
+            playerScoreText.textContent = playerScore;  // and show the scoreboard
+            scoreboard.style.visibility = 'visible';
         }
         else {
             var nimSumAll = 0,                          // Nim-sum of all the heap sizes
