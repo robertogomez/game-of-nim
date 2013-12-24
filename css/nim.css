@@ -78,6 +78,7 @@ body {
 
 #table {
     display: table;
+    margin: 0 auto;
 }
 
 .row {
@@ -86,7 +87,7 @@ body {
 
 .cell {
     display: table-cell;
-    width: 200px;
+    width: 125px;
 }
 
 .cell p {
