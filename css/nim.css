@@ -21,7 +21,7 @@ body {
     background-color: gray;
 }
 
-#playButton {
+#play-button {
     position: absolute;
     top: 150px;
     left: 150px;
@@ -31,24 +31,19 @@ body {
     -moz-border-radius: 50%;
     border-radius: 50%;
     background-color: green;
-    text-decoration: none;
     color: white;
-}
-
-#playButton p {
-    text-align: center;
-    margin-top: 50px;
+    border: none;
+    cursor: default;
 }
 
 #help-button {
-    margin-left: 357px;
-    cursor: default;
-    border: none;
-    background-color: transparent;
     width: 32px;
     height: 32px;
+    margin-left: 357px;
     padding: 0;
-
+    border: none;
+    cursor: default;
+    background-color: transparent;
 }
 
 .help {

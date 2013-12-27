@@ -1,30 +1,26 @@
 <!DOCTYPE html>
-<!-- Title:			nim.html						-->
-<!-- Author:		Roberto Gomez					-->
-<!-- Date:			7/31/13							-->
-<!-- Description:	HTML file for nim game			-->
+<!-- Title:          nim.html                                                -->
+<!-- Author:         Roberto Gomez                                           -->
+<!-- Date:           12/26/13                                                -->
+<!-- Description:    Beginning structural content for the Game of Nim        -->
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <title>Nim</title>
-        <meta name="description" content="A simple web-based Nim game using DOM 
-			manipulation.">
+        <meta name="description" content="A simple web-based Nim game using DOM manipulation.">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/nim.css">
-		<meta name="robots" content="index,follow">
+        <meta name="robots" content="index,follow">
     </head>
     <body>
-		<div id="play-area">
-			<div id="game-header">
-				<!--<button id="options-button" type="button"><img src="img/gear.png"
-					alt="Options" width="24" height="24"></button>-->
-				<button id="help-button" type="button"><img src="img/help.png"
-					alt="Help" width="32" height="32"></button>
-			</div>
-			<a id="playButton" href="javascript:startGame()"><p>Play!</p></a>
-		</div>
-
-		<!-- JS goes here -->
-		<script src="js/main.js"></script>
+        <div id="play-area">
+            <div id="game-header">
+                <button id="help-button" type="button"><img src="img/help.png"
+                    alt="Help" width="32" height="32"></button>
+            </div>
+            <button id="play-button" type="button" onclick="Nim.init();">Play</button>
+        </div>
+        <script src="js/main.js"></script>
     </body>
 </html>
+
