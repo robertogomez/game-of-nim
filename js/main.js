@@ -40,10 +40,15 @@ var Nim = (function() {
             this.element.style.backgroundColor = "black";
         };
 
+        this.remove = function(event) {                     // Method for removing token from DOM
+            this.element.parentNode.removeChild(this.element);
+        };
+
         // Register the listeners to fire on the appropriate UI events
         // The value of "this" needs to be corrected using the bind() method
         this.element.addEventListener("mouseover", this.highlight.bind(this), false);
         this.element.addEventListener("mouseout", this.unHighlight.bind(this), false);
+        this.element.addEventListener("click", this.remove.bind(this), false);
     };
 
     /*----------------------------------------------------------------------------*
