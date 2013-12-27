@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*
  * Title:          main.js                                                    *
  * Author:         Roberto Gomez                                              *
- * Date:           12/26/13                                                   *
+ * Date:           12/27/13                                                   *
  * Description:    A robust and versatile take on the Game of Nim using       *
  *                 JavaScript to manipulate DOM elements.                     *
  *----------------------------------------------------------------------------*/
@@ -32,6 +32,18 @@ var Nim = (function() {
         this.element = document.createElement("div");       // HTML element placed in DOM
         this.element.heap = heap;                           // Index values that correspond to the
         this.element.order = order;                         // tokens array, eg tokens[heap][order]
+
+        this.highlight = function(event) {                  // Methods for highlighting and
+            this.element.style.backgroundColor = "green";   // unhighlighting the token element
+        };
+        this.unHighlight = function(event) {
+            this.element.style.backgroundColor = "black";
+        };
+
+        // Register the listeners to fire on the appropriate UI events
+        // The value of "this" needs to be corrected using the bind() method
+        this.element.addEventListener("mouseover", this.highlight.bind(this), false);
+        this.element.addEventListener("mouseout", this.unHighlight.bind(this), false);
     };
 
     /*----------------------------------------------------------------------------*
@@ -80,7 +92,7 @@ var Nim = (function() {
     };
 
     return {
-        init: function() {
+        init: function() {      // Public method used to begin the game
             startGame();
         }
     };
