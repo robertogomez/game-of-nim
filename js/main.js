@@ -23,8 +23,8 @@ var Nim = (function() {
      *                                                                            *
      * Constructor for creating the Token objects. Heap and order are             *
      * sub-properties of the element property because they need to be             *
-     * accessible using the "this" keyword when the event listener for            *
-     * removeTokens() is added to the Token objects.                              *
+     * accessible using the "this" keyword when the event listeners are added in  *
+     * startGame().                                                               *
      *----------------------------------------------------------------------------*/
 
     var Token = function (pos_x, pos_y, heap, order) {
