@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*
  * Title:          main.js                                                    *
  * Author:         Roberto Gomez                                              *
- * Date:           12/27/13                                                   *
+ * Date:           12/30/13                                                   *
  * Description:    A robust and versatile take on the Game of Nim using       *
  *                 JavaScript to manipulate DOM elements.                     *
  *----------------------------------------------------------------------------*/
@@ -12,7 +12,8 @@ var Nim = (function() {
         dx = 400/maxHeaps,                          // Column and row sizes in pixels
         dy = 350/maxTokens,                         // Used for calculating position of Token objects
         playerScore = 0,                            // Number of wins for player
-        compScore = 0;                              // Number of wins for computer
+        compScore = 0,                              // Number of wins for computer
+        tokens;                                     // Array for storing Token objects
 
     // Create a reference variable for accessing the game's boundaries
     var playArea = document.getElementById("play-area");
@@ -67,7 +68,7 @@ var Nim = (function() {
 
         // Create a random 2D array for storing the Token objects
         // First index represents the heap, second index represents the Token in each heap
-        var tokens = Array(numOfHeaps);
+        tokens = Array(numOfHeaps);
         for (var i=0; i<numOfHeaps; i++)
             tokens[i] = Array(getRandomInt(2, maxTokens));
 
@@ -81,6 +82,12 @@ var Nim = (function() {
                 // Specify location of each token
                 tokens[i][j].element.style.left = tokens[i][j].pos_x + 'px';
                 tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
+
+                // Add event listeners for handling other tokens above the selected one
+                tokens[i][j].element.addEventListener("mouseover",
+                        function(){highlightAbove(this.heap, this.order);}, false);
+                tokens[i][j].element.addEventListener("mouseout",
+                        function(){unHighlightAbove(this.heap, this.order);}, false);
             }
         }
     };
@@ -94,6 +101,35 @@ var Nim = (function() {
  
     var getRandomInt = function(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    /*----------------------------------------------------------------------------*
+     * highlightAbove() function                                                  *
+     *                                                                            *
+     * Changes the background-color style property of the tokens above the        *
+     * selected one. Called when the player mouses overs a token or after the     *
+     * computer has made its selection.                                           *
+     *----------------------------------------------------------------------------*/
+
+    var highlightAbove = function(column, row) {
+        for (var j=row; j<tokens[column].length; j++) {
+            tokens[column][j].highlight();
+        }
+    };
+
+    /*----------------------------------------------------------------------------*
+     * unHighlightAbove() function                                                *
+     *                                                                            *
+     * Restores the color of tokens above the selected one when a player stops    *
+     * mousing over it. A preliminary check to see if tokens[column] is defined   *
+     * is necessary to avoid referencing erros from being thrown once a column of *
+     * tokens has been removed.                                                   *
+     *----------------------------------------------------------------------------*/
+
+    var unHighlightAbove = function(column, row) {
+        if (typeof tokens[column] !== 'undefined')
+            for (var j=row; j<tokens[column].length; j++)
+                tokens[column][j].unHighlight();
     };
 
     return {
