@@ -53,11 +53,11 @@ var Nim = (function() {
     };
 
     /*----------------------------------------------------------------------------*
-     * startGame() method                                                         *
+     * startGame() function                                                       *
      *                                                                            *
      * Fired by the play button. Sets up a round of Nim by generating a random    *
      * array of Token objects and assigs event listeners to them. The listeners   *
-     * call methods that are central to the game play such as removing tokens,    *
+     * call functons that are central to the game play such as removing tokens,   *
      * starting the computer's move, and highlighting and unhighlighting tokens.  *
      *----------------------------------------------------------------------------*/
 
@@ -93,7 +93,7 @@ var Nim = (function() {
     };
 
     /*----------------------------------------------------------------------------*
-     * getRandomInt() method                                                      *
+     * getRandomInt() function                                                    *
      *                                                                            *
      * Returns a random integer between min and max                               *
      * Using Math.round() will give you a non-uniform distribution!               *
