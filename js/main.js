@@ -108,10 +108,9 @@ var Nim = (function() {
     /*----------------------------------------------------------------------------*
      * startGame() function                                                       *
      *                                                                            *
-     * Fired by the play button. Sets up a round of Nim by generating a random    *
-     * array of Token objects and assigs event listeners to them. The listeners   *
-     * call functons that are central to the game play such as removing tokens,   *
-     * starting the computer's move, and highlighting and unhighlighting tokens.  *
+     * Sets up a round of Nim by generating a random array of Token objects. Also *
+     * assigns the coordinates of the tokens within playArea. Called by the init  *
+     * method.                                                                    *
      *----------------------------------------------------------------------------*/
 
     var startGame = function() {
@@ -133,8 +132,8 @@ var Nim = (function() {
                 tokens[i][j].element.classList.add("token");
 
                 // Specify location of each token
-                tokens[i][j].element.style.left = tokens[i][j].pos_x + 'px';
-                tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
+                tokens[i][j].element.style.left = tokens[i][j].pos_x + "px";
+                tokens[i][j].element.style.top = tokens[i][j].pos_y + "px";
             }
         }
     };
