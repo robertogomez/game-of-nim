@@ -34,26 +34,40 @@ var Nim = (function() {
         this.element.heap = heap;                           // Index values that correspond to the
         this.element.order = order;                         // tokens array, eg tokens[heap][order]
 
-        this.highlight = function(event) {                  // Methods for highlighting and
-            this.element.style.backgroundColor = "green";   // unhighlighting the token element
+        /*
+         * highlight() method
+         *
+         * Changes the background-color style property of the selected token as
+         * well as the tokens above it.
+         */
+
+        this.highlight = function(event) {
+            this.element.style.backgroundColor = "green";
+
+            for (var j=this.element.order; j<tokens[this.element.heap].length; j++)
+                tokens[this.element.heap][j].element.style.backgroundColor = "green";
         };
+
+        /*
+         * unHighlight() method
+         *
+         * Restores the color of tokens modified by the hightlight() method. A
+         * preliminary check to see if tokens[column] is defined is necessary to
+         * avoid referencing erros from being thrown once a column of tokens has
+         * been removed.
+         */
+
         this.unHighlight = function(event) {
             this.element.style.backgroundColor = "black";
+
+            for (var j=this.element.order; j<tokens[this.element.heap].length; j++)
+                tokens[this.element.heap][j].element.style.backgroundColor = "black";
         };
 
-        this.remove = function(event) {                     // Method for removing token from DOM
-            this.element.parentNode.removeChild(this.element);
-        };
-
-        // Register the listeners to fire on the appropriate UI events
+        // Register the methods to fire on the appropriate UI events
         // The value of "this" needs to be corrected using the bind() method
         this.element.addEventListener("mouseover", this.highlight.bind(this), false);
         this.element.addEventListener("mouseout", this.unHighlight.bind(this), false);
-        this.element.addEventListener("click", this.remove.bind(this), false);
-        this.element.addEventListener("mouseover",
-                function(){highlightAbove(this.heap, this.order);}, false);
-        this.element.addEventListener("mouseout",
-                function(){unHighlightAbove(this.heap, this.order);}, false);
     };
 
     /*----------------------------------------------------------------------------*
@@ -99,35 +113,6 @@ var Nim = (function() {
  
     var getRandomInt = function(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-
-    /*----------------------------------------------------------------------------*
-     * highlightAbove() function                                                  *
-     *                                                                            *
-     * Changes the background-color style property of the tokens above the        *
-     * selected one. Called when the player mouses overs a token or after the     *
-     * computer has made its selection.                                           *
-     *----------------------------------------------------------------------------*/
-
-    var highlightAbove = function(column, row) {
-        for (var j=row; j<tokens[column].length; j++) {
-            tokens[column][j].highlight();
-        }
-    };
-
-    /*----------------------------------------------------------------------------*
-     * unHighlightAbove() function                                                *
-     *                                                                            *
-     * Restores the color of tokens above the selected one when a player stops    *
-     * mousing over it. A preliminary check to see if tokens[column] is defined   *
-     * is necessary to avoid referencing erros from being thrown once a column of *
-     * tokens has been removed.                                                   *
-     *----------------------------------------------------------------------------*/
-
-    var unHighlightAbove = function(column, row) {
-        if (typeof tokens[column] !== 'undefined')
-            for (var j=row; j<tokens[column].length; j++)
-                tokens[column][j].unHighlight();
     };
 
     return {
