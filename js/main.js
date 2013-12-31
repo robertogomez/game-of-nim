@@ -53,20 +53,56 @@ var Nim = (function() {
         /*
          * unHighlight() method
          *
-         * Restores the color of tokens modified by the hightlight() method.
+         * Restores the color of tokens modified by the hightlight() method. The two
+         * beginning checks are necessary to prevent referencing invalid tokens array
+         * indices that were removed with the remove() method.
          */
 
         this.unHighlight = function(event) {
-            this.element.style.backgroundColor = "black";
+            if (typeof tokens[this.element.heap] !== "undefined") {
+                if (typeof tokens[this.element.heap][this.element.order] !== "undefined") {
+                    this.element.style.backgroundColor = "black";
 
-            if (this.element.order+1 !== tokens[this.element.heap].length)
-                tokens[this.element.heap][this.element.order+1].unHighlight();
+                    if (this.element.order+1 !== tokens[this.element.heap].length)
+                        tokens[this.element.heap][this.element.order+1].unHighlight();
+                }
+            }
+        };
+
+        /*
+         * remove() method
+         *
+         * Removes token elements from the DOM and Token objects from the
+         * tokens array. Performs the removals iteratively, starting from the last
+         * token in the heap down to the selected token. Also checks if the heap is
+         * depleted of tokens, and if so, decrements the heap properties of all the
+         * tokens after it and removes it from the tokens array.
+         */
+
+        this.remove = function(event) {
+            console.log("[" + this.element.heap + "][" + this.element.order + "]");
+
+            // Remove the element and the object
+            for (var j=tokens[this.element.heap].length-1; j>=this.element.order; j--) {
+                tokens[this.element.heap][j].element.parentNode.
+                    removeChild(tokens[this.element.heap][j].element);
+                tokens[this.element.heap].pop();
+            }
+
+            // Check if the heap is empty
+            if (tokens[this.element.heap].length === 0) {
+                for (var i=this.element.heap+1; i<tokens.length; i++)
+                    for (j=0; j<tokens[i].length; j++)
+                        tokens[i][j].element.heap--;
+                tokens.splice(this.element.heap, 1);
+            }
         };
 
         // Register the methods to fire on the appropriate UI events
         // The value of "this" needs to be corrected using the bind() method
         this.element.addEventListener("mouseover", this.highlight.bind(this), false);
         this.element.addEventListener("mouseout", this.unHighlight.bind(this), false);
+        this.element.addEventListener("click", this.remove.bind(this), false);
     };
 
     /*----------------------------------------------------------------------------*
