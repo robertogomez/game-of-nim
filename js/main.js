@@ -50,6 +50,10 @@ var Nim = (function() {
         this.element.addEventListener("mouseover", this.highlight.bind(this), false);
         this.element.addEventListener("mouseout", this.unHighlight.bind(this), false);
         this.element.addEventListener("click", this.remove.bind(this), false);
+        this.element.addEventListener("mouseover",
+                function(){highlightAbove(this.heap, this.order);}, false);
+        this.element.addEventListener("mouseout",
+                function(){unHighlightAbove(this.heap, this.order);}, false);
     };
 
     /*----------------------------------------------------------------------------*
@@ -82,12 +86,6 @@ var Nim = (function() {
                 // Specify location of each token
                 tokens[i][j].element.style.left = tokens[i][j].pos_x + 'px';
                 tokens[i][j].element.style.top = tokens[i][j].pos_y + 'px';
-
-                // Add event listeners for handling other tokens above the selected one
-                tokens[i][j].element.addEventListener("mouseover",
-                        function(){highlightAbove(this.heap, this.order);}, false);
-                tokens[i][j].element.addEventListener("mouseout",
-                        function(){unHighlightAbove(this.heap, this.order);}, false);
             }
         }
     };
