@@ -38,30 +38,29 @@ var Nim = (function() {
          * highlight() method
          *
          * Changes the background-color style property of the selected token as
-         * well as the tokens above it.
+         * well as the tokens above it. The if statement is necessary for
+         * preventing access outside of the tokens array.
          */
 
         this.highlight = function(event) {
             this.element.style.backgroundColor = "green";
 
-            for (var j=this.element.order; j<tokens[this.element.heap].length; j++)
-                tokens[this.element.heap][j].element.style.backgroundColor = "green";
+            // Call highlight() of the next Token, but not if it is the last one in the heap
+            if (this.element.order+1 !== tokens[this.element.heap].length)
+                tokens[this.element.heap][this.element.order+1].highlight();
         };
 
         /*
          * unHighlight() method
          *
-         * Restores the color of tokens modified by the hightlight() method. A
-         * preliminary check to see if tokens[column] is defined is necessary to
-         * avoid referencing erros from being thrown once a column of tokens has
-         * been removed.
+         * Restores the color of tokens modified by the hightlight() method.
          */
 
         this.unHighlight = function(event) {
             this.element.style.backgroundColor = "black";
 
-            for (var j=this.element.order; j<tokens[this.element.heap].length; j++)
-                tokens[this.element.heap][j].element.style.backgroundColor = "black";
+            if (this.element.order+1 !== tokens[this.element.heap].length)
+                tokens[this.element.heap][this.element.order+1].unHighlight();
         };
 
         // Register the methods to fire on the appropriate UI events
