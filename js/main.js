@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------*
  * Title:          main.js                                                    *
  * Author:         Roberto Gomez                                              *
- * Date:           12/30/13                                                   *
+ * Date:           1/1/14                                                     *
  * Description:    A robust and versatile take on the Game of Nim using       *
  *                 JavaScript to manipulate DOM elements.                     *
  *----------------------------------------------------------------------------*/
@@ -53,9 +53,9 @@ var Nim = (function() {
         /*
          * unHighlight() method
          *
-         * Restores the color of tokens modified by the hightlight() method. The two
-         * beginning checks are necessary to prevent referencing invalid tokens array
-         * indices that were removed with the remove() method.
+         * Restores the color of tokens modified by the hightlight() method. The
+         * two beginning checks are necessary to prevent referencing invalid
+         * tokens array indices that were removed with the remove() method.
          */
 
         this.unHighlight = function(event) {
@@ -73,10 +73,10 @@ var Nim = (function() {
          * remove() method
          *
          * Removes token elements from the DOM and Token objects from the
-         * tokens array. Performs the removals iteratively, starting from the last
-         * token in the heap down to the selected token. Also checks if the heap is
-         * depleted of tokens, and if so, decrements the heap properties of all the
-         * tokens after it and removes it from the tokens array.
+         * tokens array. Performs the removals iteratively, starting from the
+         * last token in the heap down to the selected token. Also checks if the
+         * heap is depleted of tokens, and if so, decrements the heap properties
+         * of all the tokens after it and removes it from the tokens array.
          */
 
         this.remove = function(event) {
@@ -103,6 +103,7 @@ var Nim = (function() {
         this.element.addEventListener("mouseover", this.highlight.bind(this), false);
         this.element.addEventListener("mouseout", this.unHighlight.bind(this), false);
         this.element.addEventListener("click", this.remove.bind(this), false);
+        this.element.addEventListener("click", delayCompTurn, false);
     };
 
     /*----------------------------------------------------------------------------*
@@ -147,6 +148,69 @@ var Nim = (function() {
  
     var getRandomInt = function(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
+    /*----------------------------------------------------------------------------*
+     * delayCompTurn() function                                                   *
+     *                                                                            *
+     * Function used to call startCompTurn() after 2 seconds. The function        *
+     * creates a pause after the player's turn so that the computer does not act  *
+     * immediately after.                                                         *
+     *----------------------------------------------------------------------------*/
+
+    var delayCompTurn = function() {
+        window.setTimeout(startCompTurn, 2000);
+    };
+
+    /*----------------------------------------------------------------------------*
+     * startCompTurn() function                                                   *
+     *                                                                            *
+     * Responsible for starting the computer's turn at selecting tokens. Checks   *
+     * the length of the tokens array to see if there are tokens still remaining. *
+     * Calculates nim-sums to determine the best possible selection to ensure its *
+     * victory. If the value of nimSumAll is zero, the computer can not gaurantee *
+     * victory, in which case it picks randomly. The nim-sum of two or more       *
+     * numbers is merely the XOR between them ie nim-sum = x₁ ⊕ x₂ ⊕ ... ⊕ xₙ.    *
+     * Heap size refers to the number of tokens in the heap.                      *
+     *----------------------------------------------------------------------------*/
+
+    var startCompTurn = function() {
+        var nimSumAll = 0,                          // Nim-sum of all the heap sizes
+            nimSumEach = Array(tokens.length),      // Nim-sum of each heap size with nimSumAll
+            selectedCol, selectedTok;               // Indices of the computer's selected token
+
+        nimSumAll = tokens[0].length;               // Calculate nim-sum of all the heap sizes
+        for (var i=1; i<tokens.length; i++)
+            nimSumAll ^= tokens[i].length;
+
+        // If nimSumAll is zero, computer is in a losing situation, so pick randomly
+        if (nimSumAll === 0) {
+            selectedCol = getRandomInt(0, tokens.length-1);
+            selectedTok = getRandomInt(0, tokens[selectedCol].length-1);
+        }
+        else {                                      // otherwise follow the optimal strategy
+            // Calculate the nim-sum of heap sizes and nimSumAll
+            for (i=0; i<tokens.length; i++)
+                nimSumEach[i] = tokens[i].length ^ nimSumAll;
+
+            // Find a heap in which nimSumEach is less than the heap size
+            // The nimSumEach value for that heap is the number of tokens
+            // that the heap should be reduced to
+            for (i=0; i<tokens.length; i++) {
+                if (nimSumEach[i] < tokens[i].length) {
+                    selectedCol = i;
+                    selectedTok = nimSumEach[i];
+                    break;
+                }
+            }
+        }
+
+        tokens[selectedCol][selectedTok].highlight();   // Highlight computer's selection
+
+        // Remove the computer's selection after 2 seconds
+        // As with the event listeners, the value of "this" needs to be corrected with bind()
+        window.setTimeout(tokens[selectedCol][selectedTok].remove.
+                bind(tokens[selectedCol][selectedTok]), 2000);
     };
 
     return {
