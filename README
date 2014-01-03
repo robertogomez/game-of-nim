@@ -1,23 +1,29 @@
 README
 
 NAME
-	Game of Nim - A robust and versatile take on the Game of Nim
+    Game of Nim - A simple web-based take on the classic Nim
 
 DESCRIPTION
-	This is a web page implementation of the Game of Nim. It uses JavaScript to
-	manipulate HTML DOM elements to construct a playing field that shows tokens
-	being created and removed.
+    This is a web-based implementation of the Game of Nim, designed to be run
+    in a browser. Nim is a simple game where two players (in this case, one
+    player and the computer) take turns removing tokens from a set. Multiple
+    tokens can be removed at once but only from one group at a time. The
+    objective of the game is to take the last token.
+    
+    The game is written in JavaScript and follows the module pattern. The code
+    mainly consists of generating a random array of token objects which have
+    UI events bound to them. For example, when a player clicks on a token, a
+    function is called to simulate the computer's turn, which uses a simple
+    algorithm to determine the best token selection. The game also has
+    functionality for displaying help and tracking the number of games won.
 
 ACKNOWLEDGEMENTS
-	Mozilla Develop Network for providing getRandomInt() function
-	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/
-	Global_Objects/Math/random
-
-	Question mark icon from Brightmix
-	www.brightmix.com
+    Question mark icon from Brightmix
+    www.brightmix.com
 
 VERSION
-	0.8.1
+    0.8.1
 
 AUTHOR
-	Roberto Gomez, Jr.
+    Roberto Gomez, Jr.
+
