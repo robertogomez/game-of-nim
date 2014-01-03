@@ -1,9 +1,22 @@
 /*----------------------------------------------------------------------------*
- * Title:          main.js                                                    *
+ * Title:          nim.js                                                     *
  * Author:         Roberto Gomez                                              *
- * Date:           1/1/14                                                     *
- * Description:    A robust and versatile take on the Game of Nim using       *
- *                 JavaScript to manipulate DOM elements.                     *
+ * Date:           1/2/14                                                     *
+ * Description:    A self-contained module that implements the Game of Nim.   *
+ *                 Token objects are dynamically created using a constructor  *
+ *                 that defines their properties (position, HTML element      *
+ *                 type, and relative placement) and their methods            *
+ *                 (highlight, unHighlight, and remove). The only public      *
+ *                 method is init(), which is used for starting the           *
+ *                 game. It in turn calls startGame(), which creates the      *
+ *                 token objects and stores them in a two-dimensional array.  *
+ *                 When the player clicks on a token, the startCompTurn()     *
+ *                 function is called. It uses a simple algorithm for         *
+ *                 determining the best selection to win the game. When the   *
+ *                 game is over, it calls the scoreboard() function, which    *
+ *                 shows the number of games won and prompts the user to play *
+ *                 again.                                                     *
+ * Usage:          Load the script and call Nim.init()                        *
  *----------------------------------------------------------------------------*/
 
 var Nim = (function() {
